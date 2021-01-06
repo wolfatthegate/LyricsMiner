@@ -14,7 +14,7 @@ def main():
 
     noofdoc = DB.tweetTbl.find(myquery).count() #find() method returns a list of dictionary
     
-    parallel = 1 ### 0 for serial program ### 1 for parallel program  
+    parallel = 0 ### 0 for serial program ### 1 for parallel program  
     x = 0
     y = 20
     
@@ -29,7 +29,7 @@ def main():
             with concurrent.futures.ProcessPoolExecutor() as executor:
                 executor.map(LyricsMiner.searchTweet, docs)
        
-        if x%1000 == 0 :  ###   Write a log after every x document
+        if x%(y*50) == 0 :  ###   Write a log after every x document
             with open('logs/secondaryLog.log', 'a') as logfile:
                 now = datetime.now()
                 dt_string = now.strftime("%d/%m/%Y %H:%M:%S")

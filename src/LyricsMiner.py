@@ -99,7 +99,7 @@ def searchTweet(doc):
     for eachtitle in mytitle: 
         title = cleaner.clean(eachtitle['title']) 
         
-        result = blaster.SMWalignment(tweet.lower(), title.lower(), threshold)
+        result = blaster.SMWalignment(tweet.lower(), title.lower(), DB.threshold)
             
         if round(result[2],2) > 0.70: 
             logging.info('title found', extra = {'_id': doc['_id']})
@@ -122,7 +122,9 @@ def searchTweet(doc):
 
     logging.info(mylyricquery, extra= {'_id': doc['_id']})
     logging.info(str(mylyrics.count()) + ' possible lyrics found.', extra= {'_id': doc['_id']})
-        
+    
+    maxScore = 0.0
+    
     for eachlyrics in mylyrics: #loop through mylyrics list
         
         # initialize variables
@@ -135,7 +137,7 @@ def searchTweet(doc):
         past_line_0 = ''
         combined_string = ''
         
-        maxScore = 0.0
+        maxScore = 0.0 #reset
         maxMatch = 0
   
         for eachline in eachlyrics['lyrics1'].splitlines():

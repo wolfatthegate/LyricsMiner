@@ -1,41 +1,43 @@
 import nltk
-import blast
 import re
+import BST
+
 from gensim.parsing.preprocessing import remove_stopwords
 
+dkTree = BST.Node(None) #drug keywords in BST
+with open("keywords/DrugListShort.txt", "r") as file:
+    for el in file: 
+        dkTree.insert(str(el).strip())
+
+
+stTree = BST.Node(None) #substracted terms in BST
+with open("keywords/SubstractTerms.txt", "r") as file: 
+    for el in file: 
+        stTree.insert(str(el).strip())
+
 def findDrugKeywords(str):
-    
-    terms = ['heroin', 'heroine', 'oxy', 'dopamine', 'norepinephrine',
-             'weed','cocaine', 'lean', 'blunt', 'joint', 'dank',
-             'crack', 'molly', 'coke', 'smoke', 'dope', 'cigarette',
-             'smoking', 'smokin', 'pour', 'xan', 'crack in my crack']
-    
-    substract_terms = ['u', 'ex', 'help', 'th',
-                       'dont', 'gon', 'na', 'hos', 'like', 
-                       'before', 'im ', 'nigga', 'bieber', 'hand', 
-                       'albany', 'people', 'diamonds', 'glow', 'aint', 
-                       'run', 'bout', 'fun', 'comin']
     
     ### initialization
     filtered_str = remove_stopwords(str)
     tokenized_str = nltk.word_tokenize(filtered_str)
     blaster = blast.blast()
     keywordList = []
-    
+    found = False
     for tokenized_word in tokenized_str:
-        for term in terms:      
-            result = blaster.SMalignmentGlobal(tokenized_word.lower(), term.lower())
-            if result[2] > 0.85:
-                term = re.sub(r'ing$', 'in', term)
-                keywordList.append(term.lower())   
+        found = dkTree.findval(tokenized_word)
+        if found == True: 
+            tokenized_word = re.sub(r'ing$', 'in', tokenized_word)
+            keywordList.append(tokenized_word.lower())  
+             
     if keywordList:                       
         for word_token in tokenized_str: 
-            if word_token.lower() not in substract_terms:  
-#                 word_token = spell.correction(word_token)          
+            found = stTree.findval(word_token.lower())
+            if found == False:  
                 word_token = re.sub(r'ing$', 'in', word_token)            
                 keywordList.append(word_token.lower()) 
+
     keywordList = list(dict.fromkeys(keywordList))
-#     print(keywordList)
+
     return keywordList
 
 def findArtistName(str):
