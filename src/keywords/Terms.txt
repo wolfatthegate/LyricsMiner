@@ -1,0 +1,25 @@
+Those are the terms we used to create keywords query. The terms are migrated to DrugListShort.txt 
+
+
+'heroin', 
+'heroine', 
+'oxy', 
+'dopamine', 
+'norepinephrine',
+'weed',
+'cocaine', 
+'lean', 
+'blunt', 
+'joint', 
+'dank',
+'crack', 
+'molly', 
+'coke', 
+'smoke', 
+'dope', 
+'cigarette',
+'smoking', 
+'smokin', 
+'pour', 
+'xan', 
+'crack in my crack'
