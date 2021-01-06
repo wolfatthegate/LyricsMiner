@@ -20,7 +20,6 @@ def findDrugKeywords(str):
     ### initialization
     filtered_str = remove_stopwords(str)
     tokenized_str = nltk.word_tokenize(filtered_str)
-    blaster = blast.blast()
     keywordList = []
     found = False
     for tokenized_word in tokenized_str:
