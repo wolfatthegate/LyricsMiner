@@ -104,7 +104,7 @@ def searchTweet(doc):
         if round(result[2],2) > 0.70: 
             logging.info('title found', extra = {'_id': doc['_id']})
             titleMatched = True
-            suggestions = suggestions + '\n' + printResult(result, eachtitle['title'], doc['_id'])   
+            suggestions = suggestions + printResult(result, eachtitle['title'], doc['_id'])   
             updatequery = {'_id': doc['_id']}
             now = datetime.now()
             newvalue = { '$set': {'score': round(result[2],2), \
@@ -173,13 +173,13 @@ def searchTweet(doc):
                     maxMatch = max(result[3], stepBackResult[3], maxMatch)
                     
                 if maxScore > DB.mid_score and maxMatch > 3 or maxMatch > 5: 
-                    suggestions = printResult(result, eachlyrics['title'], doc['_id'])
+                    suggestions = suggestions + printResult(result, eachlyrics['title'], doc['_id'])
                     song = song + ' ' + eachlyrics['title']                   
                     
                     go_to_next_song = True # go to next song
                 
                 if maxScore > DB.high_score:
-                    suggestions = printResult(result, eachlyrics['title'], doc['_id'])
+                    suggestions = suggestions + printResult(result, eachlyrics['title'], doc['_id'])
                     suggestions.append('found the song')
                     song = song + ' ' + eachlyrics['title']
                     logging.info('found the song', extra= {'_id': doc['_id']})             
