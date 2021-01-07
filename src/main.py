@@ -21,7 +21,7 @@ def main():
     while x < noofdoc:
         docs = DB.tweetTbl.find(myquery).skip(x).limit(y)
     
-        if parallel == 0: ###   RUN IN SERIAL 
+        if parallel == 1: ###   RUN IN SERIAL 
             for doc in docs: 
                 LyricsMiner.searchTweet(doc)
             
