@@ -1,6 +1,7 @@
 import nltk
 import re
 import BST
+import json
 
 from gensim.parsing.preprocessing import remove_stopwords
 
@@ -14,6 +15,22 @@ stTree = BST.Node(None) #substracted terms in BST
 with open("keywords/SubstractTerms.txt", "r") as file: 
     for el in file: 
         stTree.insert(str(el).strip())
+        
+ctTree = BST.Node(None) #common terms in BST
+with open("keywords/CommonTerms.txt", "r") as file: 
+    for el in file: 
+        ctTree.insert(str(el).strip())
+
+def findCommonTerms(str):
+    with open("keywords/CommonTermsDict.txt") as file: 
+        ctDict = file.read() 
+    print('hi hello')
+    
+#     js = json.loads(ctDict)
+#     
+#     for j in js: 
+#         print(j)
+
 
 def findDrugKeywords(str):
     

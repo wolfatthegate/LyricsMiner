@@ -15,13 +15,15 @@ def bstTest():
         print('found hi')
         
 def main():
-    artist = Helper.findArtistName('coke boys')
-    print(artist)
+#     artist = Helper.findArtistName('coke boys')
+#     print(artist)
+#     
+#     keywords = Helper.findDrugKeywords('I do heroine, cocaine and weed. Nigga ')
+#     print(keywords)
+#     
+#     bstTest()
     
-    keywords = Helper.findDrugKeywords('I do heroine, cocaine and weed. Nigga ')
-    print(keywords)
-    
-    bstTest()
+    Helper.findCommonTerms('')
     
 if __name__ == "__main__":
     main()

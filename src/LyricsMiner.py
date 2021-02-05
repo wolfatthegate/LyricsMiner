@@ -41,23 +41,42 @@ def printResult(result, songtitle, doc_id):
     
     return suggestions
 
+def setNewValue(score, suggestions, song, type, x_add):
+    newvalue = { '$set': {'score': score , \
+                          'suggestions': suggestions, \
+                          'song': song, \
+                          'type': type, \
+                          'x_add': x_add}}
+    return newvalue
+
 def searchTweet(doc):
     tweet = doc['tweet']
     docID = {'_id': doc['_id']}
     
     if not tweet: 
         now = datetime.now()
-        newvalue = { '$set': {'score': 0.00 , 'suggestions': 'empty tweet', 'song': '', 'type': type, 'x_add': now.strftime("%Y-%m-%d %H:%M:%S")}}
-        tweetTbl.update_one(docID, newvalue)
+        newvalue = setNewValue(0.00, 'empty tweet', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+        DB.tweetTbl.update_one(docID, newvalue)
         return 0 
     tweet = cleaner.clean(tweet)
 
+    # We won't search the database 
+    # if a tweet has two words or fewer
+    tokenizedTwt = nltk.word_tokenize(tweet)
+    if len(tokenizedTwt) < 3:
+        now = datetime.now()
+        newvalue = setNewValue(0.00, 'Tweet too short', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+        DB.tweetTbl.update_one(docID, newvalue)
+        return 0 
+    
     artistFound = Helper.findArtistName(tweet)
     if (artistFound != ''):
         now = datetime.now()
-        newvalue = { '$set': {'score': 1.00 , 'suggestions': 'artist found: ' + artistFound, 'song': '', 'type': type, 'x_add': now.strftime("%Y-%m-%d %H:%M:%S")}}
-        tweetTbl.update_one(docID, newvalue)
+        newvalue = setNewValue(1.00, 'artist found: ' + artistFound, '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+        DB.tweetTbl.update_one(docID, newvalue)
         return 0
+    
+    
     # normalizer simplify the words 
     # that spelling checkers cannot handle.
 
@@ -66,7 +85,7 @@ def searchTweet(doc):
     
     if not query_list:
         now = datetime.now()
-        newvalue = { '$set': {'score': 0.00 , 'suggestions': 'keywords not found', 'song': '', 'type': DB.type, 'x_add': now.strftime("%Y-%m-%d %H:%M:%S")}}
+        newvalue = setNewValue(0.00, 'keywords not found', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
         DB.tweetTbl.update_one(docID, newvalue)
         return 0
     
@@ -109,10 +128,8 @@ def searchTweet(doc):
             for s in suggestions: 
                 _suggestions_ = _suggestions_ + '\n' + s
                 
-            newvalue = { '$set': {'score': round(result[2],2), \
-                         'suggestions': _suggestions_, \
-                         'song': eachtitle['title'], 'type': DB.type, \
-                         'x_add': datetime.now().strftime("%Y-%m-%d %H:%M:%S")}}
+            now = datetime.now()
+            newvalue = setNewValue(round(result[2],2), _suggestions_, eachtitle['title'], DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
             DB.tweetTbl.update_one(docID, newvalue)
             break
     
@@ -199,8 +216,8 @@ def searchTweet(doc):
     
     for s in suggestions: 
         _suggestions_ = _suggestions_ + '\n' + s 
-    now = datetime.now()
-     
-    newvalue = { '$set': {'score': round(maxScore,2) , 'suggestions': _suggestions_, 'song': song, 'type': DB.type, 'x_add': now.strftime("%Y-%m-%d %H:%M:%S")}}
+    
+    now = datetime.now()     
+    newvalue = setNewValue(round(maxScore,2), _suggestions_, song, DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
     DB.tweetTbl.update_one(docID, newvalue)
     
