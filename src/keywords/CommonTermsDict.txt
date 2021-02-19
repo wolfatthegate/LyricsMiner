@@ -1,14 +1,1 @@
-{'dope': {'this is dope'},
-'hit': {'hit me up'}, 
-'shoot': {'shoot your shot'}, 
-'lit': {'this is lit'},
-'drunk': {'im drunk'}, 
-i need a blunt right now
-dab on da haters
-everyday we lit
-i need a blunt
-it was lit
-cause the grass is greener under me
-i just wanna smoke
-Shoot your shot
-thats the spirit
+{'dope': {'this is dope'}, 'hit': {'hit me up'}, 'shoot': {'shoot your shot'}, 'lit': {'this is lit', 'everyday we lit', 'it was lit'}, 'drunk': {'i am drunk'}, 'blunt': {'i need a blunt'}, 'dab': {'dab on da haters'}, 'grass': {'the grass is greener under me'}, 'smoke': {'i just wanna smoke'}, 'spirit': {'thats the spirit'}, 'roll': {'roll the dice'}}

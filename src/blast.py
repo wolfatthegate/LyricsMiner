@@ -188,8 +188,8 @@ class blast:
                 # update the score of cell - siii, sjjj
                 matrix[siii][sjjj] = max(matrix[siii-1][sjjj] + g, currCellScore, matrix[siii][sjjj-1] + g)
                 
-        df = pd.DataFrame(matrix)
-        print(df)
+#         df = pd.DataFrame(matrix)
+#         print(df)
         
         sequ1 = []
         sequ2 = []        

@@ -2,7 +2,8 @@ import nltk
 import re
 import BST
 import json
-
+import CommonTermsDict as ctd
+import blast
 from gensim.parsing.preprocessing import remove_stopwords
 
 dkTree = BST.Node(None) #drug keywords in BST
@@ -22,15 +23,19 @@ with open("keywords/CommonTerms.txt", "r") as file:
         ctTree.insert(str(el).strip())
 
 def findCommonTerms(str):
-    with open("keywords/CommonTermsDict.txt") as file: 
-        ctDict = file.read() 
-    print('hi hello')
     
-#     js = json.loads(ctDict)
-#     
-#     for j in js: 
-#         print(j)
-
+    filtered_str = remove_stopwords(str)
+    tokenized_str = nltk.word_tokenize(filtered_str)
+    blaster = blast.blast()
+    
+    for token in tokenized_str: 
+        if token in ctd.ctDict:
+            for el in ctd.ctDict[token]: 
+                # compare el with str 
+                result = blaster.SMWalignment(el, str.lower(), threshold = 0.80)
+                if result[2] > 0.65: 
+                    return True           
+    return False
 
 def findDrugKeywords(str):
     
