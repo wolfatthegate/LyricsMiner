@@ -44,8 +44,8 @@ def main():
                 continue
             
             counter += 1 
-            file.write('Original' + str(randoc['tweet'])+'\n')
-            file.write('Clean' + tweet+'\n')            
+            file.write('Original - ' + str(randoc['tweet'])+'\n')
+            file.write('Clean - ' + tweet+'\n')            
             file.write(str(randoc['suggestions'])+'\n')
             file.write('>>> \n')
             file.write('___________________________\n')

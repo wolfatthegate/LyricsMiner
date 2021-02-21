@@ -4,7 +4,7 @@ ctDict = {'dope': {'this is dope', 'thats dope', 'that shit dope', 'what a dope'
           'shot': {'take a shot'}, 
           'lit': {'its lit', 'this is lit', 'everyday we lit', 'it was lit',\
                    'lets get lit', 'time to get lit', 'she too lit', 'be lit',\
-                   'im so lit', 'its fuckin lit', 'its too lit', 'oh my lit'},
+                   'im so lit', 'its fuckin lit', 'its too lit', 'oh my lit', 'thats lit'},
           'weed': {'i need weed', 'i smoke weed', 'i have weed'}, 
           'drunk': {'i am drunk'}, 
           'blunt': {'i need a blunt', 'smoke a blunt'}, 
