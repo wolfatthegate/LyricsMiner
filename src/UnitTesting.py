@@ -23,7 +23,7 @@ def main():
 #     
 #     bstTest()
     
-    if Helper.findCommonTerms('this s lit'): 
+    if Helper.findCommonTerms('that shit was dope'): 
         print('found')
     
 if __name__ == "__main__":

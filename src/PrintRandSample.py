@@ -10,7 +10,7 @@ def main():
     tablename = sys.argv[0] # '2016-11-Nov-week-1'
     filename = "Rand200-"+ tablename + sys.argv[1] +".txt"
     
-    matchScoreGT = 0.34
+    matchScoreGT = 0.40
     
     myclient = pymongo.MongoClient("mongodb://localhost:27017/")
     myclient.list_database_names()
@@ -39,9 +39,7 @@ def main():
         for randoc in randocs: 
         
             tweet = cleaner.clean(randoc['tweet'])
-            
-            if 'lit' in tweet: 
-                print('lit')
+
             if Helper.findCommonTerms(tweet): 
                 continue
             
