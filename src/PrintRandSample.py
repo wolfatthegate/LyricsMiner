@@ -7,8 +7,8 @@ import TextCleaner
 def main():
     cleaner = TextCleaner.TextCleaner()
     
-    tablename = sys.argv[0] # '2016-11-Nov-week-1'
-    filename = "Rand200-"+ tablename + sys.argv[1] +".txt"
+    tablename = sys.argv[1] # '2016-11-Nov-week-1'
+    filename = "Rand200-"+ tablename + "-" + sys.argv[2] +".txt"
     
     matchScoreGT = 0.40
     
@@ -40,11 +40,12 @@ def main():
         
             tweet = cleaner.clean(randoc['tweet'])
 
-            if Helper.findCommonTerms(tweet): 
+            if Helper.findCommonTerms(tweet.lower()): 
                 continue
             
             counter += 1 
-            file.write(str(randoc['tweet'])+'\n')
+            file.write('Original' + str(randoc['tweet'])+'\n')
+            file.write('Clean' + tweet+'\n')            
             file.write(str(randoc['suggestions'])+'\n')
             file.write('>>> \n')
             file.write('___________________________\n')

@@ -32,7 +32,7 @@ def findCommonTerms(str):
         if token in ctd.ctDict:
             for el in ctd.ctDict[token]: 
                 # compare el with str )
-                result = blaster.SMWalignment(el, str.lower(), threshold = 0.80)
+                result = blaster.SMWalignment(el, str, threshold = 0.80)
                 if result[2] > 0.65: 
                     return True           
     return False
