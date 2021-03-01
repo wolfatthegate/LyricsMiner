@@ -2,6 +2,7 @@ import pymongo
 import sys
 import Helper
 import BST
+import TextCleaner
 
 def bstTest():
     bst = BST.Node(None)
@@ -22,8 +23,9 @@ def main():
 #     print(keywords)
 #     
 #     bstTest()
-    
-    if Helper.findCommonTerms('is fucking lit'): 
+    cleaner = TextCleaner.TextCleaner()
+    text = cleaner.clean('Take a shot https://t.co/6iGOyky3Eb')
+    if Helper.findCommonTerms(text.lower()): 
         print('found')
     
 if __name__ == "__main__":

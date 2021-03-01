@@ -3,6 +3,7 @@ import random
 import pymongo
 import Helper
 import TextCleaner
+import nltk
 
 def main():
     cleaner = TextCleaner.TextCleaner()
@@ -10,7 +11,7 @@ def main():
     tablename = sys.argv[1] # '2016-11-Nov-week-1'
     filename = "Rand200-"+ tablename + "-" + sys.argv[2] +".txt"
     
-    matchScoreGT = 0.40
+    matchScoreGT = 0.49
     
     myclient = pymongo.MongoClient("mongodb://localhost:27017/")
     myclient.list_database_names()
@@ -39,7 +40,11 @@ def main():
         for randoc in randocs: 
         
             tweet = cleaner.clean(randoc['tweet'])
-
+            tokenized_str = nltk.word_tokenize(tweet)
+    
+            if len(tokenized_str)<5: 
+                continue
+            
             if Helper.findCommonTerms(tweet.lower()): 
                 continue
             

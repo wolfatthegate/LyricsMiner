@@ -1,23 +1,25 @@
-ctDict = {'dope': {'this is dope', 'thats dope', 'that shit dope', 'what a dope', 'dope as fuck', 'dope as always'},
+ctDict = {'dope': {'this is dope', 'thats dope', 'that shit dope', 'so dope',\
+                    'what a dope', 'dope as fuck', 'dope as always', 'these are dope'},
           'hit': {'hit me up'}, 
           'shoot': {'shoot your shot'}, 
-          'shot': {'take a shot'}, 
+          'shot': {'take a shot', 'its worth a shot', 'give it a shot'}, 
           'lit': {'its lit', 'this is lit', 'everyday we lit', 'it was lit',\
                    'lets get lit', 'time to get lit', 'she too lit', 'be lit',\
                    'im so lit', 'its fuckin lit', 'its too lit', 'oh my lit', 'thats lit'},
           'weed': {'i need weed', 'i smoke weed', 'i have weed'}, 
-          'drunk': {'i am drunk'}, 
+          'drunk': {'i am drunk', 'lets get drunk', 'i wanna get drunk'}, 
           'blunt': {'i need a blunt', 'smoke a blunt'}, 
           'dab': {'dab on da haters'},
-          'grass': {'the grass is greener under me', 'gress is green'},
+          'grass': {'grass is green', 'the grass is greener under me', 'that grass aint greener on the other side',\
+                    'the grass is grenner on the other side'},
           'smoke': {'i just wanna smoke', 'let us smoke', 'i need to smoke',\
                      'i smoke cigs', 'smoke a joint', 'i smoke too much',\
                      'smoke in the air'},
           'spirit': {'thats the spirit', 'i there in spirit'}, 
           'roll': {'roll the dice', 'rock and roll', 'roll a blunt'}, 
-          'hero': {'my hero'},
+          'rock': {'i wanna rock', 'a rock and a hard place'},
+          'hero': {'my hero', 'i need a hero'},
           'juice': {'i got the juice'}, 
-          'shot': {'its worth a shot'}, 
           'line': {'get in line', 'out of line', 'got a line up', 'all on the line', 'hit my line'}, 
           'crack': {'i crack myself up'}, 
           'kick': {'lets kick it'}, 
@@ -26,4 +28,6 @@ ctDict = {'dope': {'this is dope', 'thats dope', 'that shit dope', 'what a dope'
           'boogie': {'a boogie wit da hoodie'}, 
           'candy': {'eating candy'}, 
           'beast': {'its a beast', 'you are a beast'}, 
-          'ball': {'run the ball'}}
+          'ball': {'run the ball'},
+          'pot': {'the pot calling the kettle black'}, 
+          'square': {'back to square one'}}
