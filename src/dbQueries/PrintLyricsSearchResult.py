@@ -11,7 +11,7 @@ def main():
     twitterDataTbl.list_collection_names()
     
     tweetTbl = twitterDataTbl[tablename]
-    myquery = { 'score' : {"$gt": 0.05}}
+    myquery = { 'score' : {"$gt": 0.49}}
     
     noofdoc = tweetTbl.find(myquery).count()
 
