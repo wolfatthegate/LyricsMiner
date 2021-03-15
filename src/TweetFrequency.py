@@ -25,7 +25,8 @@ def main():
     with open(filename, 'r') as dList: 
         for d in dList: 
             search_words.append(d.strip())
-        search_words.append('')
+    
+    search_words.append('')
     
     with open('logs/' + table_name + 'freq-search.txt', 'a') as logfile: 
         dt_string = now.strftime("%d-%m-%Y_%H-%M-%S")
