@@ -32,7 +32,7 @@ def main():
         if x%(y*100) == 0 :  ###   Write a log after every x document
             with open('logs/secondaryLog.log', 'a') as logfile:
                 now = datetime.now()
-                dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+                dt_string = now.strftime("%m/%d/%Y %H:%M:%S")
                 logfile.write('{}: {} scanned {} documents \n'.format(DB.tablename, dt_string, x)) 
     
         x = x + y

@@ -66,7 +66,7 @@ def searchTweet(doc):
     
     if Helper.findCommonTerms(tweet.lower()): 
         now = datetime.now()
-        newvalue = setNewValue(0.00, 'empty tweet', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+        newvalue = setNewValue(0.00, 'common term', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
         DB.tweetTbl.update_one(docID, newvalue)
         return 0         
     
