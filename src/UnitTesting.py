@@ -3,6 +3,7 @@ import sys
 import Helper
 import BST
 import TextCleaner
+import blast
 
 def bstTest():
     bst = BST.Node(None)
@@ -23,10 +24,18 @@ def main():
 #     print(keywords)
 #     
 #     bstTest()
-    cleaner = TextCleaner.TextCleaner()
-    text = cleaner.clean('Take a shot https://t.co/6iGOyky3Eb')
-    if Helper.findCommonTerms(text.lower()): 
-        print('found')
+#     cleaner = TextCleaner.TextCleaner()
+#     text = cleaner.clean('Take a shot https://t.co/6iGOyky3Eb')
+#     if Helper.findCommonTerms(text.lower()): 
+#         print('found')
+
+    tok1 = ['its', 'lit']
+    tok2 = ['its', 'so', 'lit']
+    blaster = blast.blast()
+    result = blaster.SMTalignment(tok1, tok2, 0.65)
+    print(result[0])
+    print(result[1])
+    print(result[2])
     
 if __name__ == "__main__":
     main()

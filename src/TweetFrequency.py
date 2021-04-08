@@ -44,7 +44,7 @@ def main():
             
             logfile.write('total doc for '+ search_word + ': ' + str(total_doc) +'\n')
             while x < total_doc: 
-                for mydoc in tweetTbl.find(query).limit(1): #find() method returns a list of dictionary
+                for mydoc in tweetTbl.find(query).limit(200): #find() method returns a list of dictionary
                      
                     freq = 1
                     update_mydoc = {'_id': mydoc['_id']}

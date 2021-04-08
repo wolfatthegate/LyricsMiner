@@ -59,15 +59,30 @@ def searchTweet(doc):
         DB.tweetTbl.update_one(docID, newvalue)
         return 0 
     tweet = cleaner.clean(tweet)
-
-    # We won't search the database 
-    # if a tweet has two words or fewer
+    
+    '''
+    Find the common terms in a smaller database. 
+    '''
+    
+    if Helper.findCommonTerms(tweet.lower()): 
+        now = datetime.now()
+        newvalue = setNewValue(0.00, 'empty tweet', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+        DB.tweetTbl.update_one(docID, newvalue)
+        return 0         
+    
+    '''
+    Skip searches for tweets less than 4 words
+    '''
+    
     tokenizedTwt = nltk.word_tokenize(tweet)
-    if len(tokenizedTwt) < 3:
+    if len(tokenizedTwt) < 5:
         now = datetime.now()
         newvalue = setNewValue(0.00, 'Tweet too short', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
         DB.tweetTbl.update_one(docID, newvalue)
         return 0 
+    
+    '''
+    ### This part will be skipped as we will not be finding artist name anymore. 
     
     artistFound = Helper.findArtistName(tweet)
     if (artistFound != ''):
@@ -75,7 +90,7 @@ def searchTweet(doc):
         newvalue = setNewValue(1.00, 'artist found: ' + artistFound, '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
         DB.tweetTbl.update_one(docID, newvalue)
         return 0
-    
+    '''
     
     # normalizer simplify the words 
     # that spelling checkers cannot handle.

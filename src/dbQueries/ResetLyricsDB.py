@@ -6,7 +6,7 @@ warnings.filterwarnings("ignore")
  
 def updateTweet(mydoc):
     updatequery = {'_id': mydoc['_id']}
-    newvalue = { '$set': {'excluded': 0}}
+    newvalue = { '$set': {'score': 0, 'suggestions': '', 'type': 0}}
     lyricTbl.update_one(updatequery, newvalue)
     
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
@@ -14,7 +14,7 @@ myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient['TwitterData']
 lyricTbl = mydb['2016-11-Nov-week-1']
 
-myquery = {'excluded': {'$ne': 0}}
+myquery = {}
 noofdoc = lyricTbl.find(myquery).count()
 
 x = 0

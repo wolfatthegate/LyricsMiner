@@ -29,7 +29,7 @@ def main():
             with concurrent.futures.ProcessPoolExecutor() as executor:
                 executor.map(LyricsMiner.searchTweet, docs)
        
-        if x%(y*50) == 0 :  ###   Write a log after every x document
+        if x%(y*100) == 0 :  ###   Write a log after every x document
             with open('logs/secondaryLog.log', 'a') as logfile:
                 now = datetime.now()
                 dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
