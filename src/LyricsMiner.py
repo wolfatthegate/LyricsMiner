@@ -100,7 +100,7 @@ def searchTweet(doc):
     
     if not query_list:
         now = datetime.now()
-        newvalue = setNewValue(0.00, 'keywords not found', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+        newvalue = setNewValue(0.01, 'filtered', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
         DB.tweetTbl.update_one(docID, newvalue)
         return 0
     
