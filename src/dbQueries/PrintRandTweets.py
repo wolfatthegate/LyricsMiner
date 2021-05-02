@@ -3,7 +3,6 @@ import random
 import pymongo
 
 def main():
-    cleaner = TextCleaner.TextCleaner()
     
     tablename = sys.argv[1] # '2016-11-Nov-week-1'
     filename = "Rand1000-"+ tablename + "-" + sys.argv[2] +".txt"
@@ -34,7 +33,7 @@ def main():
     with open("exportedData/" + filename, "a") as file:
         for randoc in randocs: 
         
-            tweet = randoc['tweet'].replace('n', '')
+            tweet = randoc['tweet'].replace('\n', '')
             file.write(tweet+'\n')
             
 if __name__ == "__main__":
