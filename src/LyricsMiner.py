@@ -104,7 +104,7 @@ def searchTweet(doc):
         DB.tweetTbl.update_one(docID, newvalue)
         return 0
     
-    continue 
+    return 0
     
     go_to_next_tweet = False
     titleMatched = False
