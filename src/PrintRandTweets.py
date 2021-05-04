@@ -20,7 +20,7 @@ def main():
     docs = tweetTbl.find(myquery)
     tweetCount = tweetTbl.find(myquery).count()
     
-    sample_size = sys.argv[2]
+    sample_size = int(sys.argv[2])
     if tweetCount < sample_size: 
         sample_size = tweetCount
     

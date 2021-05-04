@@ -10,3 +10,15 @@ rock
 trash
 smash
 kool
+glass
+shooter
+brown
+square
+bump
+butt
+hero
+drag
+candy
+draw
+speed
+base
