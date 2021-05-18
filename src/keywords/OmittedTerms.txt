@@ -1,4 +1,4 @@
-hit
+hit						   
 lit
 kick
 snow
@@ -14,6 +14,7 @@ glass
 shooter
 brown
 square
+squares
 bump
 butt
 hero
@@ -22,3 +23,15 @@ candy
 draw
 speed
 base
+line
+miller
+grass
+wash
+deck
+nail
+broccoli
+shot 
+spirit 
+dice
+shoot
+speedball

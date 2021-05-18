@@ -9,7 +9,7 @@ ctDict = {  'dope': {'this is dope', 'thats dope', 'that shit dope', 'so dope',\
                    'lets get lit', 'time to get lit', 'she too lit', 'be lit',\
                    'im so lit', 'its fuckin lit', 'its too lit', 'oh my lit', 'thats lit'},
             'weed': {'i need weed', 'i smoke weed', 'i have weed'}, 
-            'drunk': {'i am drunk', 'lets get drunk', 'i wanna get drunk'}, 
+            'drunk': {'i am drunk', 'lets get drunk', 'i wanna get drunk', 'i am not drunk'}, 
             'blunt': {'i need a blunt', 'smoke a blunt'}, 
             'dab': {'dab on da haters'},
             'grass': {'grass is green', 'the grass is greener under me',\
@@ -17,7 +17,7 @@ ctDict = {  'dope': {'this is dope', 'thats dope', 'that shit dope', 'so dope',\
                     'the grass is grenner on the other side'},
             'smoke': {'i just wanna smoke', 'let us smoke', 'i need to smoke',\
                      'i smoke cigs', 'smoke a joint', 'i smoke too much',\
-                     'smoke in the air'},
+                     'smoke in the air', 'you dont want no smoke'},
             'spirit': {'thats the spirit', 'i there in spirit'}, 
             'roll': {'roll the dice', 'rock and roll', 'roll a blunt'}, 
             'rock': {'i wanna rock', 'a rock and a hard place'},
@@ -33,4 +33,4 @@ ctDict = {  'dope': {'this is dope', 'thats dope', 'that shit dope', 'so dope',\
           'beast': {'its a beast', 'you are a beast'}, 
           'ball': {'run the ball'},
           'pot': {'the pot calling the kettle black'}, 
-          'square': {'back to square one'}}
+          'square': {'back to square one', 'be there or be square'}}

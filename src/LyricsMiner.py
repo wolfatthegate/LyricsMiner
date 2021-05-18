@@ -62,13 +62,14 @@ def searchTweet(doc):
     
     '''
     Find the common terms in a smaller database. 
-    '''
+    ### This feature is integrated into findDrugKeywords function
     
     if Helper.findCommonTerms(tweet.lower()): 
         now = datetime.now()
         newvalue = setNewValue(0.00, 'common term', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
         DB.tweetTbl.update_one(docID, newvalue)
         return 0         
+    '''
     
     '''
     Skip searches for tweets less than 4 words
@@ -103,8 +104,6 @@ def searchTweet(doc):
         newvalue = setNewValue(0.01, 'filtered', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
         DB.tweetTbl.update_one(docID, newvalue)
         return 0
-    
-    return 0
     
     go_to_next_tweet = False
     titleMatched = False

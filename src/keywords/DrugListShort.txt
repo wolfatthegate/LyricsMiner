@@ -3,8 +3,6 @@ dope
 weed
 lean
 crack
-shot
-line
 molly
 blunt
 coke
@@ -24,14 +22,9 @@ wine
 marijuana
 loaded
 wasted
-grass
-dice
 bowl
-spirit
 horse
-deck
 powder
-wash
 xan
 ecstasy
 addict
@@ -51,7 +44,6 @@ ripped
 dab
 torch
 ganja
-miller
 herb
 boogie
 heater
@@ -59,8 +51,6 @@ hail
 808
 chalk
 chemical
-squares
-nail
 nicotine
 jacks
 session
@@ -155,7 +145,6 @@ stogs
 tweeking
 brewski
 straights
-speedball
 boozer
 screwball
 gpc

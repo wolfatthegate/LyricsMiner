@@ -21,6 +21,11 @@ ctTree = BST.Node(None) #common terms in BST
 with open("keywords/CommonTerms.txt", "r") as file: 
     for el in file: 
         ctTree.insert(str(el).strip())
+        
+otTree = BST.Node(None) #ommitted terms in BST
+with open("keywords/OmittedTerms.txt", "r") as file: 
+    for el in file: 
+        otTree.insert(str(el).strip())
 
 def findCommonTerms(str):
     
@@ -43,7 +48,10 @@ def findDrugKeywords(str):
     filtered_str = remove_stopwords(str)
     tokenized_str = nltk.word_tokenize(filtered_str)
     keywordList = []
+    commonList = []
     found = False
+    count = 0
+    
     for tokenized_word in tokenized_str:
         found = dkTree.findval(tokenized_word)
         if found == True: 
@@ -56,6 +64,15 @@ def findDrugKeywords(str):
             if found == False:  
                 word_token = re.sub(r'ing$', 'in', word_token)            
                 keywordList.append(word_token.lower()) 
+
+                          
+    for word_token in tokenized_str: 
+        found = otTree.findval(word_token.lower())
+        if found == True:  
+            count = count + 1                        
+            commonList.append(word_token.lower()) 
+    if count > 1: 
+        keywordList.extend(commonList)
 
     keywordList = list(dict.fromkeys(keywordList))
 
