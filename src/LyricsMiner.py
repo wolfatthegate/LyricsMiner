@@ -61,17 +61,6 @@ def searchTweet(doc):
     tweet = cleaner.clean(tweet)
     
     '''
-    Find the common terms in a smaller database. 
-    ### This feature is integrated into findDrugKeywords function
-    
-    if Helper.findCommonTerms(tweet.lower()): 
-        now = datetime.now()
-        newvalue = setNewValue(0.00, 'common term', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
-        DB.tweetTbl.update_one(docID, newvalue)
-        return 0         
-    '''
-    
-    '''
     Skip searches for tweets less than 4 words
     '''
     
@@ -81,17 +70,6 @@ def searchTweet(doc):
         newvalue = setNewValue(0.00, 'Tweet too short', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
         DB.tweetTbl.update_one(docID, newvalue)
         return 0 
-    
-    '''
-    ### This part will be skipped as we will not be finding artist name anymore. 
-    
-    artistFound = Helper.findArtistName(tweet)
-    if (artistFound != ''):
-        now = datetime.now()
-        newvalue = setNewValue(1.00, 'artist found: ' + artistFound, '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
-        DB.tweetTbl.update_one(docID, newvalue)
-        return 0
-    '''
     
     # normalizer simplify the words 
     # that spelling checkers cannot handle.
@@ -107,11 +85,8 @@ def searchTweet(doc):
     
     go_to_next_tweet = False
     titleMatched = False
-    savedline = ''
-    combined_lines = ''
-    song = ''
+    savedline, combined_lines, song = '', '', ''
     suggestions = []
-    _suggestions_ = ''
     
     keyword_list_title = []
     keyword_list_lyric = []
@@ -129,7 +104,8 @@ def searchTweet(doc):
         temp_str = doc['tweet']
     
     logging.info(mytitlequery, extra = {'_id': doc['_id']})
-    logging.info('searching for ' + temp_str + ' ' + str(mytitle.count()) + ' possible titles found.', extra = {'_id': doc['_id']})
+    logging.info('searching for ' + temp_str + ' ' + str(mytitle.count()) + \
+                 ' possible titles found.', extra = {'_id': doc['_id']})
     
     for eachtitle in mytitle: 
         title = cleaner.clean(eachtitle['title']) 
@@ -145,7 +121,8 @@ def searchTweet(doc):
                 _suggestions_ = _suggestions_ + '\n' + s
                 
             now = datetime.now()
-            newvalue = setNewValue(round(result[2],2), _suggestions_, eachtitle['title'], DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+            newvalue = setNewValue(round(result[2],2), _suggestions_, eachtitle['title'], \
+                                   DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
             DB.tweetTbl.update_one(docID, newvalue)
             break
     
@@ -162,8 +139,7 @@ def searchTweet(doc):
     
     for eachlyrics in mylyrics: #loop through mylyrics list
         
-        # initialize variables
-        go_to_next_song = False  
+        # initialize variables 
         continue_test = False  
 
         # read each line of lyrics  
@@ -206,23 +182,14 @@ def searchTweet(doc):
                     stepBackResult = blaster.SMWalignment(tweet, stepBackLine.lower(), DB.threshold)
                     maxScore = max(result[2], stepBackResult[2], maxScore)
                     maxMatch = max(result[3], stepBackResult[3], maxMatch)
-                    
-                if maxScore > DB.mid_score and maxMatch > 3 or maxMatch > 5: 
-                    suggestions = suggestions + printResult(result, eachlyrics['title'], doc['_id'])
-                    song = song + ' ' + eachlyrics['title']                   
-                    
-                    go_to_next_song = True # go to next song
                 
                 if maxScore > DB.high_score:
                     suggestions = suggestions + printResult(result, eachlyrics['title'], doc['_id'])
                     suggestions.append('found the song')
-                    song = song + ' ' + eachlyrics['title']
+                    song = song + ', ' + eachlyrics['title']
                     logging.info('found the song', extra= {'_id': doc['_id']})             
                     go_to_next_tweet = True
                     break
-            
-            if go_to_next_song == True: 
-                break
              
         if go_to_next_tweet == True:
             break
@@ -230,10 +197,7 @@ def searchTweet(doc):
     suggestions.append('Score: ' + str(round(maxScore,2)) + '/1.0' )
     suggestions = list(dict.fromkeys(suggestions))
     
-    for s in suggestions: 
-        _suggestions_ = _suggestions_ + '\n' + s 
-    
     now = datetime.now()     
-    newvalue = setNewValue(round(maxScore,2), _suggestions_, song, DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+    newvalue = setNewValue(round(maxScore,2), '\n'.join(suggestions), song, DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
     DB.tweetTbl.update_one(docID, newvalue)
     

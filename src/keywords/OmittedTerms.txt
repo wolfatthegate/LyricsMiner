@@ -35,3 +35,6 @@ spirit
 dice
 shoot
 speedball
+blowing
+loaded
+icing

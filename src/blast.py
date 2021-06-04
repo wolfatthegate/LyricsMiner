@@ -132,6 +132,10 @@ class blast:
                 
         align_score = float(align_counter)/(len(sequ1)-1)
         
+        # if alignment score is greater than 0.49, we don't need to search any farther 
+        if align_score > 0.49: 
+            return align_seq1, align_seq2, align_score, align_counter, first_half_score, second_half_score, sequential_search_recommandation, stepback_search_recommandation
+        
         greterLen = max(len(sequ1), len(sequ2))
         halfway = int(greterLen/2)
         

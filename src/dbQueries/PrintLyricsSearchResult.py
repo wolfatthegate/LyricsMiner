@@ -12,18 +12,19 @@ def main():
     
     tweetTbl = twitterDataTbl[tablename]
     myquery = { 'score' : {"$gt": 0.49}}
+    myquery = {}
     
     noofdoc = tweetTbl.find(myquery).count()
 
     x = 0
     y = 50
     
-    while x < noofdoc:
+    while x < 1:
         docs = tweetTbl.find(myquery).skip(x).limit(y)
         
         for doc in docs: 
             with open("LyricsResult.txt", "a") as file: 
-                file.write(str(doc['tweet'])+'\n')
+                file.write(str(doc['tweet']) + '\t' + str(doc['tweetID']) + '\n')
         x = x + y
     
 if __name__ == "__main__":

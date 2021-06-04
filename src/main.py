@@ -9,11 +9,10 @@ from datetime import datetime
 def main():
     
     ### Initialization
-    myquery = {"score": {"$gt": 0.49}}
+    myquery = {}
 
     noofdoc = DB.tweetTbl.find(myquery).count() #find() method returns a list of dictionary
-    print(noofdoc)
-    quit()
+
     parallel = 1 ### 0 for serial program ### 1 for parallel program  
     x = 0
     y = 20

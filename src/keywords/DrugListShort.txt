@@ -15,12 +15,10 @@ liquor
 pot
 joint
 juice
-blowing
 dust
 dank
 wine
 marijuana
-loaded
 wasted
 bowl
 horse
@@ -91,7 +89,6 @@ batty
 cig
 parliament
 plastered
-christina
 nuggets
 flake
 sleet
@@ -102,7 +99,6 @@ methamphetamine
 jade
 buzzed
 gravel
-icing
 joes
 newports
 rig

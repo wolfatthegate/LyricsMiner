@@ -64,7 +64,6 @@ def findDrugKeywords(str):
             if found == False:  
                 word_token = re.sub(r'ing$', 'in', word_token)            
                 keywordList.append(word_token.lower()) 
-
                           
     for word_token in tokenized_str: 
         found = otTree.findval(word_token.lower())
