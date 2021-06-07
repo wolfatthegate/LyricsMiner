@@ -27,11 +27,11 @@ blaster = blast.blast()
 
 def printResult(result, songtitle, doc_id):
 
-    logging.info('tweet: ' + result[0], extra={'_id': doc_id})
-    logging.info('query: ' + result[1], extra={'_id': doc_id})
-    logging.info('Score: ' + str(round(result[2],2)) + '/1.0 (' + str(result[3]) + ' words matched)' + 'in song: ' + songtitle, extra={'_id': doc_id})
-    logging.info(' first half score: ' + str(round(result[4], 2)), extra={'_id': doc_id})
-    logging.info('second half score: ' + str(round(result[5], 2)), extra={'_id': doc_id})
+    # logging.info('tweet: ' + result[0], extra={'_id': doc_id})
+    # logging.info('query: ' + result[1], extra={'_id': doc_id})
+    # logging.info('Score: ' + str(round(result[2],2)) + '/1.0 (' + str(result[3]) + ' words matched)' + 'in song: ' + songtitle, extra={'_id': doc_id})
+    # logging.info(' first half score: ' + str(round(result[4], 2)), extra={'_id': doc_id})
+    # logging.info('second half score: ' + str(round(result[5], 2)), extra={'_id': doc_id})
     
     suggestions = []
     suggestions.append('tweet: ' + result[0])
@@ -103,9 +103,9 @@ def searchTweet(doc):
     else:
         temp_str = doc['tweet']
     
-    logging.info(mytitlequery, extra = {'_id': doc['_id']})
-    logging.info('searching for ' + temp_str + ' ' + str(mytitle.count()) + \
-                 ' possible titles found.', extra = {'_id': doc['_id']})
+    # logging.info(mytitlequery, extra = {'_id': doc['_id']})
+    # logging.info('searching for ' + temp_str + ' ' + str(mytitle.count()) + \
+    #              ' possible titles found.', extra = {'_id': doc['_id']})
     
     for eachtitle in mytitle: 
         title = cleaner.clean(eachtitle['title']) 
@@ -132,8 +132,8 @@ def searchTweet(doc):
     mylyricquery = {'$and': keyword_list_lyric} # query keyword
     mylyrics = DB.lyricTbl.find(mylyricquery)  #find in lyrics database
 
-    logging.info(mylyricquery, extra= {'_id': doc['_id']})
-    logging.info(str(mylyrics.count()) + ' possible lyrics found.', extra= {'_id': doc['_id']})
+    # logging.info(mylyricquery, extra= {'_id': doc['_id']})
+    # logging.info(str(mylyrics.count()) + ' possible lyrics found.', extra= {'_id': doc['_id']})
     
     maxScore = 0.0
     
