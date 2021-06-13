@@ -52,6 +52,7 @@ def ImportTweets(filepath):
                         'description': description, 
                         'follower': follower,
                         'location': location}
+                
             except:
                 print('duplicate')
             try:
@@ -62,7 +63,7 @@ def ImportTweets(filepath):
     
         logfile.write('finished importing file: {} at {}\n'.format(filepath, datetime.now().time())) 
 
-folderlist = ['2017-10-week-1', '2017-10-week-2', '2017-10-week-3', '2017-10-week-4']
+folderlist = ['2016-10-week-1', '2016-10-week-2', '2016-10-week-3', '2016-10-week-4']
 
 for folder in folderlist: 
     myTbl = mydb[folder]

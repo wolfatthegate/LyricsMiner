@@ -18,6 +18,7 @@ import Helper
 import DB
 warnings.filterwarnings("ignore")
 
+from gensim.parsing.preprocessing import remove_stopwords
 from datetime import datetime
 # from spellchecker import SpellChecker
 
@@ -36,7 +37,6 @@ def printResult(result, songtitle, doc_id):
     suggestions = []
     suggestions.append('tweet: ' + result[0])
     suggestions.append('query: ' + result[1])
-
     suggestions.append('(' + str(result[3]) + ' words matched)')
     
     return suggestions
@@ -60,12 +60,14 @@ def searchTweet(doc):
         return 0 
     tweet = cleaner.clean(tweet)
     
+    filtered_str = remove_stopwords(tweet)
+    tokenized_str = nltk.word_tokenize(filtered_str)
+    
     '''
     Skip searches for tweets less than 4 words
     '''
     
-    tokenizedTwt = nltk.word_tokenize(tweet)
-    if len(tokenizedTwt) < 5:
+    if len(tokenized_str) < 5:
         now = datetime.now()
         newvalue = setNewValue(0.00, 'Tweet too short', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
         DB.tweetTbl.update_one(docID, newvalue)
@@ -75,7 +77,7 @@ def searchTweet(doc):
     # that spelling checkers cannot handle.
 
     tweet = normalizer.normalize(tweet)
-    query_list = Helper.findDrugKeywords(tweet)
+    query_list = Helper.findDrugKeywords(tokenized_str)
     
     if not query_list:
         now = datetime.now()
@@ -116,12 +118,9 @@ def searchTweet(doc):
             logging.info('title found', extra = {'_id': doc['_id']})
             titleMatched = True
             suggestions = suggestions + printResult(result, eachtitle['title'], doc['_id'])   
-            
-            for s in suggestions: 
-                _suggestions_ = _suggestions_ + '\n' + s
                 
             now = datetime.now()
-            newvalue = setNewValue(round(result[2],2), _suggestions_, eachtitle['title'], \
+            newvalue = setNewValue(round(result[2],2), '\n'.join(suggestions), eachtitle['title'], \
                                    DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
             DB.tweetTbl.update_one(docID, newvalue)
             break

@@ -27,10 +27,8 @@ with open("keywords/OmittedTerms.txt", "r") as file:
     for el in file: 
         otTree.insert(str(el).strip())
 
-def findCommonTerms(str):
+def findCommonTerms(tokenized_str):
     
-    filtered_str = remove_stopwords(str)
-    tokenized_str = nltk.word_tokenize(filtered_str)
     blaster = blast.blast()
     
     for token in tokenized_str: 
@@ -42,11 +40,10 @@ def findCommonTerms(str):
                     return True           
     return False
 
-def findDrugKeywords(str):
+def findDrugKeywords(tokenized_str):
     
     ### initialization
-    filtered_str = remove_stopwords(str)
-    tokenized_str = nltk.word_tokenize(filtered_str)
+
     keywordList = []
     commonList = []
     found = False

@@ -1,7 +1,7 @@
 import pymongo
 import logging
 
-tablename = '2017-10-week-2'
+tablename = '2016-10-week-3'
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient['LyricsDB']
 lyricTbl = mydb['Lyrics']
