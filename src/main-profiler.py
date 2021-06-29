@@ -34,9 +34,13 @@ def main():
                 now = datetime.now()
                 dt_string = now.strftime("%m/%d/%Y %H:%M:%S")
                 logfile.write('{}: {} scanned {} documents \n'.format(DB.tablename, dt_string, x)) 
-    
+            DB.tweetTbl.bulk_write(DB.request)
+            DB.request.clear()   
         x = x + y
-    
+
+    DB.tweetTbl.bulk_write(DB.request)
+    DB.request.clear()
+        
 if __name__ == "__main__":
     cProfile.run('main()')
                                 

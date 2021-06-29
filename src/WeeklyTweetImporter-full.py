@@ -27,8 +27,12 @@ def ImportTweets(filepath):
     #         print(json.dumps(jsonObj, indent = 4)) # pretty-print
             
             try:
+                if jsonObj['lang'] != 'en':
+                    continue  
                 tweetID = str(jsonObj['id'])               
                 tweet = jsonObj['text'] # actual jsonObj
+                
+                
                 createdAt = jsonObj['created_at']
                 retweeted = 0 if jsonObj['retweeted'] is False else 1        
                 userid = jsonObj['user']['id']
@@ -52,18 +56,18 @@ def ImportTweets(filepath):
                         'description': description, 
                         'follower': follower,
                         'location': location}
-                
+                try:
+                    myTbl.insert_one(data)
+                except:
+                    print('insertion error. TweetID: ' + tweetID)
             except:
-                print('duplicate')
-            try:
-                myTbl.insert_one(data)
-            except:
-                print('insertion error. TweetID: ' + tweetID)
+                print('json object error')
+            
                 #logfile.write('duplicate data. TweetID: {}. Tweet {}. Filepath {}\n'.format(tweetID, description, filepath)) 
     
         logfile.write('finished importing file: {} at {}\n'.format(filepath, datetime.now().time())) 
 
-folderlist = ['2016-10-week-1', '2016-10-week-2', '2016-10-week-3', '2016-10-week-4']
+folderlist = ['2020-03-week-4']
 
 for folder in folderlist: 
     myTbl = mydb[folder]

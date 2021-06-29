@@ -1,8 +1,7 @@
 
-### Improved version of Lyrics-Blast-Live
-### The keywords are stored in BST 
-### thus the searches will be much faster
-### created on Dec 28, 2020
+###  The updates are stored in DB.request as list entries
+###  Debugging logs are taken out. 
+###  JUN 15, 2021
 ###  Author - Waylon Luo
 
 import TextCleaner
@@ -51,12 +50,12 @@ def setNewValue(score, suggestions, song, type, x_add):
 
 def searchTweet(doc):
     tweet = doc['tweet']
-    docID = {'_id': doc['_id']}
+    tweetID = {'_id': doc['_id']}
     
     if not tweet: 
         now = datetime.now()
         newvalue = setNewValue(0.00, 'empty tweet', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
-        DB.tweetTbl.update_one(docID, newvalue)
+        DB.tweetTbl.update_one(tweetID, newvalue)
         return 0 
     tweet = cleaner.clean(tweet)
     
@@ -69,21 +68,23 @@ def searchTweet(doc):
     
     if len(tokenized_str) < 5:
         now = datetime.now()
-        newvalue = setNewValue(0.00, 'Tweet too short', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
-        DB.tweetTbl.update_one(docID, newvalue)
+        newvalue = setNewValue(0.01, 'Tweet too short', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+        DB.tweetTbl.update_one(tweetID, newvalue)
         return 0 
     
-    # normalizer simplify the words 
-    # that spelling checkers cannot handle.
-
-    tweet = normalizer.normalize(tweet)
-    query_list = Helper.findDrugKeywords(tokenized_str)
+    query_list = Helper.findDrugKeywords(tokenized_str)    
     
     if not query_list:
         now = datetime.now()
-        newvalue = setNewValue(0.01, 'filtered', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
-        DB.tweetTbl.update_one(docID, newvalue)
+        newvalue = setNewValue(0.01, 'no drug keywords found', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+        DB.tweetTbl.update_one(tweetID, newvalue)
         return 0
+    
+    for el in tokenized_str: 
+        if len(el) > 4: 
+            query_list.append(el)
+            
+    query_list = list(dict.fromkeys(query_list))
     
     go_to_next_tweet = False
     titleMatched = False
@@ -105,6 +106,9 @@ def searchTweet(doc):
     else:
         temp_str = doc['tweet']
     
+    # normalizer simplify the words 
+    # that spelling checkers cannot handle.
+    tweet = normalizer.normalize(tweet)
     # logging.info(mytitlequery, extra = {'_id': doc['_id']})
     # logging.info('searching for ' + temp_str + ' ' + str(mytitle.count()) + \
     #              ' possible titles found.', extra = {'_id': doc['_id']})
@@ -122,7 +126,7 @@ def searchTweet(doc):
             now = datetime.now()
             newvalue = setNewValue(round(result[2],2), '\n'.join(suggestions), eachtitle['title'], \
                                    DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
-            DB.tweetTbl.update_one(docID, newvalue)
+            DB.tweetTbl.update_one(tweetID, newvalue)
             break
     
     if titleMatched == True:
@@ -198,5 +202,5 @@ def searchTweet(doc):
     
     now = datetime.now()     
     newvalue = setNewValue(round(maxScore,2), '\n'.join(suggestions), song, DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
-    DB.tweetTbl.update_one(docID, newvalue)
+    DB.tweetTbl.update_one(tweetID, newvalue)
     

@@ -3,11 +3,13 @@ import pymongo
 import concurrent.futures
 import LyricsMiner
 import DB
+from pymongo import UpdateOne
+import time
 
 from datetime import datetime
 
 def main():
-    
+    start = time.time()
     ### Initialization
     myquery = {}
 
@@ -28,13 +30,16 @@ def main():
             with concurrent.futures.ProcessPoolExecutor() as executor:
                 executor.map(LyricsMiner.searchTweet, docs)
        
-        if x%(y*100) == 0 :  ###   Write a log after every x document
+        if x%(100) == 0 :  ###   Write a log after every x document
             with open('logs/'+ DB.tablename +'Log.log', 'a') as logfile:
                 now = datetime.now()
                 dt_string = now.strftime("%m/%d/%Y %H:%M:%S")
                 logfile.write('{}: {} scanned {} documents \n'.format(DB.tablename, dt_string, x)) 
-    
         x = x + y
+
+    stop = time.time()
+    print("total time: {}".format(stop-start))
+    
     
 if __name__ == "__main__":
     main()

@@ -27,7 +27,16 @@ with open("keywords/OmittedTerms.txt", "r") as file:
     for el in file: 
         otTree.insert(str(el).strip())
 
-def findCommonTerms(tokenized_str):
+def findArtistName(str):
+    artistList = ['young thug', 'coke boys']
+
+    for artist in artistList:
+        str = str.lower()               
+        if (str.find(artist)!=-1):
+            return artist
+    return ''
+
+def findCommonTerms(tokenized_str, str):
     
     blaster = blast.blast()
     
@@ -74,11 +83,13 @@ def findDrugKeywords(tokenized_str):
 
     return keywordList
 
-def findArtistName(str):
-    artistList = ['young thug', 'coke boys']
+def findDrugKeywordsForRawTweets(tokenized_str):
+    
+    found = False
+    
+    for tokenized_word in tokenized_str:
+        found = dkTree.findval(tokenized_word)
+        if found == True: 
+            return True
 
-    for artist in artistList:
-        str = str.lower()               
-        if (str.find(artist)!=-1):
-            return artist
-    return ''
+    return False
