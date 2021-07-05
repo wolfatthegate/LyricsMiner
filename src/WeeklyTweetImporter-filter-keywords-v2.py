@@ -35,6 +35,8 @@ def ImportTweets(filepath):
                 tweetID = str(jsonObj['id'])               
                 tweet = jsonObj['text'] # actual jsonObj
                 createdAt = jsonObj['created_at']
+                userid = jsonObj['user_id']
+                follower = jsonObj['followers']
                                 
                 filtered_str = remove_stopwords(tweet)
                 tokenized_str = nltk.word_tokenize(filtered_str)
@@ -52,7 +54,9 @@ def ImportTweets(filepath):
                 
                 data = {'tweetID': tweetID,
                         'tweet' : tweet, 
-                        'createdAt': createdAt}
+                        'createdAt': createdAt,
+                        'userid': userid, 
+                        'follower': follower}
                 
                 try:
                     myTbl.insert_one(data)

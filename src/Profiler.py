@@ -12,7 +12,7 @@ def main():
     
     ### Query
     
-    dataList = tweetTbl.find({'score': {'$gt': 0.01}})
+    dataList = tweetTbl.find({'score': {'$gt': 0.49}})
     
     ### initialization
     
