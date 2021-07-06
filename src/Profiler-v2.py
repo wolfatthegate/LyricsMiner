@@ -24,8 +24,11 @@ def main():
     for data in dataList: 
         tweet = tweetTbl_1.find({'tweetID': data['tweetID']})
         
-        if tweet[0]['userid']: 
-            user_id =  tweet[0]['userid']
+        if tweet.count() > 0:
+            if 'userid' in tweet[0]:
+                user_id =  tweet[0]['userid']
+            else:
+                continue
         else:
             continue
         if user_id in user_dict.keys():
