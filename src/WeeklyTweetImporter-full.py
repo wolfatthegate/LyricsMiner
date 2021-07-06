@@ -67,10 +67,11 @@ def ImportTweets(filepath):
     
         logfile.write('finished importing file: {} at {}\n'.format(filepath, datetime.now().time())) 
 
-folderlist = ['2020-03-week-4']
+folderlist = ['2016-10-week-3']
 
-for folder in folderlist: 
-    myTbl = mydb[folder]
+for folder in folderlist:
+     
+    myTbl = mydb[folder + '-1']
     filepathList = glob.glob(folder + "/*.json")
     
     for filepath in filepathList: 
