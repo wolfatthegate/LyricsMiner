@@ -5,8 +5,8 @@ def main():
 
     ### DB connection
 
-    table_name = '2016-10-week-1'
-    table_name_1 = '2016-10-week-1-1'
+    table_name = '2016-10-week-3'
+    table_name_1 = '2016-10-week-3-1'
     
     myclient = pymongo.MongoClient("mongodb://localhost:27017/")
     twitterDB = myclient['TwitterData']
@@ -24,7 +24,10 @@ def main():
     for data in dataList: 
         tweet = tweetTbl_1.find({'tweetID': data['tweetID']})
         
-        user_id =  tweet['userid']
+        if tweet[0]['userid']: 
+            user_id =  tweet[0]['userid']
+        else:
+            continue
         if user_id in user_dict.keys():
             continue
         
@@ -33,7 +36,7 @@ def main():
         
         for userdata in userdataList: 
             tweets.append(userdata['tweet'].replace('\n', ' '))
-        user_dict[data['userid']] = tweets
+        user_dict[user_id] = tweets
     
     with open('logs/'+table_name+'profiles.log', 'a') as profile: 
         for key, value in user_dict.items(): 
