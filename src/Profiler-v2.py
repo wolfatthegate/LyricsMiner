@@ -29,6 +29,10 @@ def main():
                 user_id =  tweet[0]['userid']
             else:
                 continue
+            if 'follower' in tweet[0]:
+                follower = tweet[0]['follower']
+            else: 
+                follower = 0
         else:
             continue
         if user_id in user_dict.keys():
@@ -38,10 +42,11 @@ def main():
         userdataList = tweetTbl_1.find({'userid': user_id})
         
         for userdata in userdataList: 
-            tweets.append(userdata['tweet'].replace('\n', ' '))
+            tweets.append(str(follower) + '\t' + userdata['tweet'].replace('\n', ' '))
         user_dict[user_id] = tweets
     
     with open('logs/'+table_name+'profiles.log', 'a') as profile: 
+        profile.write('{}\t{}\t{}\n'.format('user id', 'follower', 'tweet'))
         for key, value in user_dict.items(): 
             profile.write( '{}\t{}\n'.format(key, '\n\t'.join(value)))    
     
