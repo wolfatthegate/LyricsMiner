@@ -1,8 +1,7 @@
 '''
-
 This program is to process Jianfeng's 
-tweets with three keys in Json objects. 
-Jun 28, 2021
+tweets without any filters. 
+July 18, 2021
 
 '''
 import TextCleaner
@@ -16,7 +15,7 @@ from gensim.parsing.preprocessing import remove_stopwords
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient['TwitterData']
-folderlist = ['2019-03-week-1']
+folderlist = ['2019-03-week-1', '2019-03-week-4']
 cleaner = TextCleaner.TextCleaner()
 
 def ImportTweets(filepath):
@@ -42,21 +41,40 @@ def ImportTweets(filepath):
                 tokenized_str = nltk.word_tokenize(filtered_str)
                 
                 if Helper.findCommonTerms(tokenized_str, cleaner.clean(tweet)) == True:
-                    print('common Term: ', tweet)
+                    data = {'tweetID': tweetID,
+                        'tweet' : tweet, 
+                        'createdAt': createdAt,
+                        'userid': userid, 
+                        'follower': follower, 
+                        'suggestions': 'common term', 
+                        'type':1}
+                    try:
+                        myTbl.insert_one(data)
+                    except:
+                        print('insertion error. TweetID: ' + tweetID)
                     continue
                 
                 # exclude short tweets
                 if len(tokenized_str) < 4:
+                    data = {'tweetID': tweetID,
+                        'tweet' : tweet, 
+                        'createdAt': createdAt,
+                        'userid': userid, 
+                        'follower': follower, 
+                        'suggestions': 'tweet too short', 
+                        'type':1}
+                    try:
+                        myTbl.insert_one(data)
+                    except:
+                        print('insertion error. TweetID: ' + tweetID)
                     continue
-                
-                if Helper.findDrugKeywordsForRawTweets(tokenized_str) == False: 
-                    continue 
                 
                 data = {'tweetID': tweetID,
                         'tweet' : tweet, 
                         'createdAt': createdAt,
                         'userid': userid, 
-                        'follower': follower}
+                        'follower': follower,
+                        'type':0}
                 
                 try:
                     myTbl.insert_one(data)
@@ -76,7 +94,7 @@ for folder in folderlist:
     filepathList = glob.glob(folder + "/*.json")
     
     for filepath in filepathList: 
-        with open('logs/' + folder + '_json_log.txt', 'a') as logfile:
+        with open('logs/' + folder + '_json_import_log.txt', 'a') as logfile:
             ImportTweets(filepath)
     print('Finished Importing: ' + folder + '\n')    
 

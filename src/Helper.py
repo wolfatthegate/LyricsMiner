@@ -7,9 +7,12 @@ import blast
 from gensim.parsing.preprocessing import remove_stopwords
 
 dkTree = BST.Node(None) #drug keywords in BST
+dkList = []
 with open("keywords/DrugListShort.txt", "r") as file:
     for el in file: 
         dkTree.insert(str(el).strip())
+        dkList.append(str(el))
+
 
 
 stTree = BST.Node(None) #substracted terms in BST
@@ -84,12 +87,14 @@ def findDrugKeywords(tokenized_str):
     return keywordList
 
 def findDrugKeywordsForRawTweets(tokenized_str):
-    
-    found = False
+    blaster = blast.blast()
     
     for tokenized_word in tokenized_str:
-        found = dkTree.findval(tokenized_word)
-        if found == True: 
-            return True
-
+        for dk in dkList: 
+            result = blaster.SMWalignment(tokenized_word, dk, threshold = 0.75)
+            if result[2] > 0.65: 
+                return True 
     return False
+
+
+
