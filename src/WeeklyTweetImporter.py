@@ -15,7 +15,7 @@ from gensim.parsing.preprocessing import remove_stopwords
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient['TwitterData']
-folderlist = ['2019-03-week-1', '2019-03-week-4']
+folderlist = ['2020-03-week-1', '2020-03-week-2', '2020-03-week-3', '2020-03-week-4']
 cleaner = TextCleaner.TextCleaner()
 
 def ImportTweets(filepath):

@@ -11,16 +11,16 @@ from datetime import datetime
 def main():
     start = time.time()
     ### Initialization
-    myquery = {}
+    myquery = {'type': 0}
 
     noofdoc = DB.tweetTbl.find(myquery).count() #find() method returns a list of dictionary
 
     parallel = 1 ### 0 for serial program ### 1 for parallel program  
     x = 0
-    y = 20
+    y = 200
     
     while x < noofdoc:
-        docs = DB.tweetTbl.find(myquery).skip(x).limit(y)
+        docs = DB.tweetTbl.find(myquery).limit(y)
     
         if parallel == 0: ###   RUN IN SERIAL 
             for doc in docs: 
