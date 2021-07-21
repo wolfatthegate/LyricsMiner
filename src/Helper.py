@@ -8,12 +8,12 @@ from gensim.parsing.preprocessing import remove_stopwords
 
 dkTree = BST.Node(None) #drug keywords in BST
 dkList = []
+CUSTOMSTOPWORDS = []
+
 with open("keywords/DrugListShort.txt", "r") as file:
     for el in file: 
         dkTree.insert(str(el).strip())
         dkList.append(str(el))
-
-
 
 stTree = BST.Node(None) #substracted terms in BST
 with open("keywords/SubstractTerms.txt", "r") as file: 
@@ -29,6 +29,13 @@ otTree = BST.Node(None) #ommitted terms in BST
 with open("keywords/OmittedTerms.txt", "r") as file: 
     for el in file: 
         otTree.insert(str(el).strip())
+        
+with open("custom_stopwords2.txt", "r", encoding="utf-8") as file:
+    for el in file: 
+        CUSTOMSTOPWORDS.append(el) 
+        
+def remove_stopWords_custom(str):
+    return " ".join(w for w in str.split() if w not in CUSTOMSTOPWORDS)
 
 def findArtistName(str):
     artistList = ['young thug', 'coke boys']
@@ -48,7 +55,7 @@ def findCommonTerms(tokenized_str, str):
             for el in ctd.ctDict[token]: 
                 # compare el with str )
                 result = blaster.SMWalignment(el, str, threshold = 0.80)
-                if result[2] > 0.65: 
+                if result[2] > 0.70: 
                     return True           
     return False
 
@@ -87,7 +94,7 @@ def findDrugKeywords(tokenized_str):
     return keywordList
 
 def findDrugKeywordsForRawTweets(tokenized_str):
-    blaster = blast.blast()
+
     
     for tokenized_word in tokenized_str:
         for dk in dkList: 

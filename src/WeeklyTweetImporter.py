@@ -36,6 +36,8 @@ def ImportTweets(filepath):
                 createdAt = jsonObj['created_at']
                 userid = jsonObj['user_id']
                 follower = jsonObj['followers']
+                
+
                                 
                 filtered_str = remove_stopwords(tweet)
                 tokenized_str = nltk.word_tokenize(filtered_str)

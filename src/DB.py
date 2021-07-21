@@ -1,7 +1,7 @@
 import pymongo
 import logging
 
-tablename = '2019-03-week-3'
+tablename = '2016-10-week-1'
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient['LyricsDB']
 lyricTbl = mydb['Lyrics']
@@ -13,4 +13,4 @@ logging.basicConfig(filename='logs/'+tablename+'_Logs.log',level=logging.INFO, f
 
 threshold = 0.65
 high_score = 0.49
-type = 1
+type = 2

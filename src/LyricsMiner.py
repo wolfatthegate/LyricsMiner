@@ -60,6 +60,7 @@ def searchTweet(doc):
     tweet = cleaner.clean(tweet)
     
     filtered_str = remove_stopwords(tweet)
+    filtered_str = Helper.remove_stopWords_custom(filtered_str)
     tokenized_str = nltk.word_tokenize(filtered_str)
     
     '''
@@ -73,6 +74,8 @@ def searchTweet(doc):
         return 0 
     
     query_list = Helper.findDrugKeywords(tokenized_str)    
+    with open("logs/debug.txt", 'a') as debugfile: 
+        debugfile.write('Tweet - {}\nTokes - {}\nQuery List - {}\n\n'.format(tweet, tokenized_str, query_list))
     
     if not query_list:
         now = datetime.now()

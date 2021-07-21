@@ -10,14 +10,18 @@ April 10, 2021
 UserID and Follower Count is added. 
 May 25, 2021
 '''
-
+import TextCleaner
 import glob
 import pymongo
 import json
+import nltk
+from gensim.parsing.preprocessing import remove_stopwords
+import Helper
 from datetime import datetime
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient['TwitterData']
+cleaner = TextCleaner.TextCleaner()
 
 def ImportTweets(filepath):
     with open(filepath, 'r') as f:
@@ -47,15 +51,50 @@ def ImportTweets(filepath):
                     location = jsonObj['place']['full_name']
                 except: 
                     location = ''
+                
+                if len(tweet.split()) < 4:
+                    data = {'tweetID': tweetID,
+                        'tweet' : tweet, 
+                        'createdAt': createdAt,
+                        'retweeted': retweeted,
+                        'userid': userid, 
+                        'follower': follower, 
+                        'suggestions': 'tweet too short', 
+                        'type':1}
+                    try:
+                        myTbl.insert_one(data)
+                    except:
+                        print('insertion error. TweetID: ' + tweetID)
+                    continue
+                                    
+                filtered_str = remove_stopwords(tweet)
+                tokenized_str = nltk.word_tokenize(filtered_str)
+                
+                if Helper.findCommonTerms(tokenized_str, cleaner.clean(tweet)) == True:
+                    data = {'tweetID': tweetID,
+                        'tweet' : tweet, 
+                        'createdAt': createdAt,
+                        'retweeted': retweeted,
+                        'userid': userid, 
+                        'follower': follower, 
+                        'suggestions': 'common term', 
+                        'type':1}
+                    try:
+                        myTbl.insert_one(data)
+                    except:
+                        print('insertion error. TweetID: ' + tweetID)
+                    continue
+                
+                # exclude short tweets
                     
                 data = {'tweetID': tweetID,
                         'tweet' : tweet, 
                         'createdAt': createdAt,
                         'retweeted': retweeted, 
                         'userid': userid,
-                        'description': description, 
                         'follower': follower,
-                        'location': location}
+                        'suggestions': '',
+                        'type':0}
                 try:
                     myTbl.insert_one(data)
                 except:
@@ -67,11 +106,11 @@ def ImportTweets(filepath):
     
         logfile.write('finished importing file: {} at {}\n'.format(filepath, datetime.now().time())) 
 
-folderlist = ['2016-10-week-3']
+folderlist = ['2016-10-week-1']
 
 for folder in folderlist:
      
-    myTbl = mydb[folder + '-1']
+    myTbl = mydb[folder]
     filepathList = glob.glob(folder + "/*.json")
     
     for filepath in filepathList: 

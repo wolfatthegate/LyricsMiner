@@ -11,7 +11,7 @@ from datetime import datetime
 def main():
     start = time.time()
     ### Initialization
-    myquery = {'type': 0}
+    myquery = {'type':0}
 
     noofdoc = DB.tweetTbl.find(myquery).count() #find() method returns a list of dictionary
 
