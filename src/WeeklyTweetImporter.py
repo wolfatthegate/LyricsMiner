@@ -37,7 +37,20 @@ def ImportTweets(filepath):
                 userid = jsonObj['user_id']
                 follower = jsonObj['followers']
                 
-
+                                # exclude short tweets
+                if len(tweet.split()) < 4:
+                    data = {'tweetID': tweetID,
+                        'tweet' : tweet, 
+                        'createdAt': createdAt,
+                        'userid': userid, 
+                        'follower': follower, 
+                        'suggestions': 'tweet too short', 
+                        'type':1}
+                    try:
+                        myTbl.insert_one(data)
+                    except:
+                        print('insertion error. TweetID: ' + tweetID)
+                    continue
                                 
                 filtered_str = remove_stopwords(tweet)
                 tokenized_str = nltk.word_tokenize(filtered_str)
@@ -56,26 +69,12 @@ def ImportTweets(filepath):
                         print('insertion error. TweetID: ' + tweetID)
                     continue
                 
-                # exclude short tweets
-                if len(tokenized_str) < 4:
-                    data = {'tweetID': tweetID,
-                        'tweet' : tweet, 
-                        'createdAt': createdAt,
-                        'userid': userid, 
-                        'follower': follower, 
-                        'suggestions': 'tweet too short', 
-                        'type':1}
-                    try:
-                        myTbl.insert_one(data)
-                    except:
-                        print('insertion error. TweetID: ' + tweetID)
-                    continue
-                
                 data = {'tweetID': tweetID,
                         'tweet' : tweet, 
                         'createdAt': createdAt,
                         'userid': userid, 
                         'follower': follower,
+                        'suggestions': '',
                         'type':0}
                 
                 try:
