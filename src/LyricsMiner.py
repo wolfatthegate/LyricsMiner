@@ -16,6 +16,7 @@ import warnings
 import Helper
 import DB
 warnings.filterwarnings("ignore")
+import time
 
 from gensim.parsing.preprocessing import remove_stopwords
 from datetime import datetime
@@ -49,161 +50,177 @@ def setNewValue(score, suggestions, song, type, x_add):
     return newvalue
 
 def searchTweet(doc):
-    tweet = doc['tweet']
-    tweetID = {'_id': doc['_id']}
-    
-    if not tweet: 
-        now = datetime.now()
-        newvalue = setNewValue(0.00, 'empty tweet', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
-        DB.tweetTbl.update_one(tweetID, newvalue)
-        return 0 
-    tweet = cleaner.clean(tweet)
-    
-    filtered_str = remove_stopwords(tweet)
-    filtered_str = Helper.remove_stopWords_custom(filtered_str)
-    tokenized_str = nltk.word_tokenize(filtered_str)
-    
-    '''
-    Skip searches for tweets less than 4 words
-    '''
-    
-    if len(tokenized_str) < 5:
-        now = datetime.now()
-        newvalue = setNewValue(0.01, 'Tweet too short', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
-        DB.tweetTbl.update_one(tweetID, newvalue)
-        return 0 
-    
-    query_list = Helper.findDrugKeywords(tokenized_str)    
-    with open("logs/debug.txt", 'a') as debugfile: 
-        debugfile.write('Tweet - {}\nTokes - {}\nQuery List - {}\n\n'.format(tweet, tokenized_str, query_list))
-    
-    if not query_list:
-        now = datetime.now()
-        newvalue = setNewValue(0.01, 'no drug keywords found', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
-        DB.tweetTbl.update_one(tweetID, newvalue)
-        return 0
-    
-    for el in tokenized_str: 
-        if len(el) > 4: 
-            query_list.append(el)
+    try: 
+        with open("logs/debug.txt", 'a') as debugfile:
+            tweet = doc['tweet']
+            obj_id = {'_id': doc['_id']}
+            tweetID = doc['tweetID']
             
-    query_list = list(dict.fromkeys(query_list))
-    
-    go_to_next_tweet = False
-    titleMatched = False
-    savedline, combined_lines, song = '', '', ''
-    suggestions = []
-    
-    keyword_list_title = []
-    keyword_list_lyric = []
-    
-    for query_word in query_list:
-        keyword_list_title.append({"title": {"$regex": query_word, "$options": "-i"}})
-        keyword_list_lyric.append({"lyrics1": {"$regex": query_word, "$options": "-i"}})
-    
-    mytitlequery = {'$and': keyword_list_title}
-    mytitle = DB.lyricTbl.find(mytitlequery)
-    
-    if len(doc['tweet']) > 60:
-        temp_str = doc['tweet'][0:60] + ' ... '
-    else:
-        temp_str = doc['tweet']
-    
-    # normalizer simplify the words 
-    # that spelling checkers cannot handle.
-    tweet = normalizer.normalize(tweet)
-    # logging.info(mytitlequery, extra = {'_id': doc['_id']})
-    # logging.info('searching for ' + temp_str + ' ' + str(mytitle.count()) + \
-    #              ' possible titles found.', extra = {'_id': doc['_id']})
-    
-    for eachtitle in mytitle: 
-        title = cleaner.clean(eachtitle['title']) 
-        
-        result = blaster.SMWalignment(tweet.lower(), title.lower(), DB.threshold)
+            # completed scan
+            if doc['type'] == 1: 
+                return 0
             
-        if round(result[2],2) > 0.70: 
-            logging.info('title found', extra = {'_id': doc['_id']})
-            titleMatched = True
-            suggestions = suggestions + printResult(result, eachtitle['title'], doc['_id'])   
-                
-            now = datetime.now()
-            newvalue = setNewValue(round(result[2],2), '\n'.join(suggestions), eachtitle['title'], \
-                                   DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
-            DB.tweetTbl.update_one(tweetID, newvalue)
-            break
-    
-    if titleMatched == True:
-        return 0
-      
-    mylyricquery = {'$and': keyword_list_lyric} # query keyword
-    mylyrics = DB.lyricTbl.find(mylyricquery)  #find in lyrics database
-
-    # logging.info(mylyricquery, extra= {'_id': doc['_id']})
-    # logging.info(str(mylyrics.count()) + ' possible lyrics found.', extra= {'_id': doc['_id']})
-    
-    maxScore = 0.0
-    
-    for eachlyrics in mylyrics: #loop through mylyrics list
-        
-        # initialize variables 
-        continue_test = False  
-
-        # read each line of lyrics  
-        past_line_2 = ''
-        past_line_1 = ''
-        past_line_0 = ''
-        combined_string = ''
-        
-        maxScore = 0.0 #reset
-        maxMatch = 0
-  
-        for eachline in eachlyrics['lyrics1'].splitlines():
+            if not tweet: 
+                now = datetime.now()
+                newvalue = setNewValue(0.00, 'empty tweet', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+                DB.tweetTbl.update_one(obj_id, newvalue)
+                return 0 
+            tweet = cleaner.clean(tweet)
             
-            eachline = cleaner.clean(eachline)
+            filtered_str = remove_stopwords(tweet)
+            filtered_str = Helper.remove_stopWords_custom(filtered_str)
+            tokenized_str = nltk.word_tokenize(filtered_str)
             
-            past_line_2 = past_line_1
-            past_line_1 = past_line_0
-            past_line_0 = eachline
+            '''
+            Skip searches for tweets less than 4 words
+            '''
             
-            combined_string = past_line_2 + ' ' + past_line_1 + ' ' + past_line_0
+            if len(tokenized_str) < 5:
+                now = datetime.now()
+                newvalue = setNewValue(0.01, 'Tweet too short', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+                DB.tweetTbl.update_one(obj_id, newvalue)
+                return 0 
+            
+            start = time.time()
+            query_list = Helper.findDrugKeywords(tokenized_str)    
+            stop = time.time()
+            debugfile.write("{} - total time finding keyword: {}\n".format(tweetID, stop-start))
+            
+            # with open("logs/debug.txt", 'a') as debugfile: 
+            #     debugfile.write('Tweet - {}\nTokes - {}\nQuery List - {}\n\n'.format(tweet, tokenized_str, query_list))
+            
+            if not query_list:
+                now = datetime.now()
+                newvalue = setNewValue(0.01, 'no drug keywords found', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+                DB.tweetTbl.update_one(obj_id, newvalue)
+                return 0
+            
+            for el in tokenized_str: 
+                if len(el) > 4: 
+                    query_list.append(el)
+                    
+            query_list = list(dict.fromkeys(query_list))
+            
+            go_to_next_tweet = False
+            titleMatched = False
+            savedline, combined_lines, song = '', '', ''
+            suggestions = []
+            
+            keyword_list_title = []
+            keyword_list_lyric = []
+            
             for query_word in query_list:
-                if query_word.lower() in combined_string.lower():
-                    continue_test = True
-                        
-            if continue_test == True:
-
-                # perform blast Search                    
-                result = blaster.SMWalignment(tweet, past_line_1.lower(), DB.threshold)
-                maxScore = result[2]
-                maxMatch = result[3]
-                    
-                if result[6] == True:
-                    followupLine = past_line_1 + ' ' + past_line_0
-                    followUpResult = blaster.SMWalignment(tweet, followupLine.lower(), DB.threshold)
-                    maxScore = max(result[2], followUpResult[2], maxScore)
-                    maxMatch = max(result[3], followUpResult[3], maxMatch)
-                    
-                if result[7] == True:
-                    stepBackLine = past_line_2 + ' ' + past_line_1
-                    stepBackResult = blaster.SMWalignment(tweet, stepBackLine.lower(), DB.threshold)
-                    maxScore = max(result[2], stepBackResult[2], maxScore)
-                    maxMatch = max(result[3], stepBackResult[3], maxMatch)
+                keyword_list_title.append({"title": {"$regex": query_word, "$options": "-i"}})
+                keyword_list_lyric.append({"lyrics1": {"$regex": query_word, "$options": "-i"}})
+            
+            mytitlequery = {'$and': keyword_list_title}
+            mytitle = DB.lyricTbl.find(mytitlequery)
+            
+            if len(doc['tweet']) > 60:
+                temp_str = doc['tweet'][0:60] + ' ... '
+            else:
+                temp_str = doc['tweet']
+            
+            # normalizer simplify the words 
+            # that spelling checkers cannot handle.
+            tweet = normalizer.normalize(tweet)
+            # logging.info(mytitlequery, extra = {'_id': doc['_id']})
+            # logging.info('searching for ' + temp_str + ' ' + str(mytitle.count()) + \
+            #              ' possible titles found.', extra = {'_id': doc['_id']})
+            
+            for eachtitle in mytitle: 
+                title = cleaner.clean(eachtitle['title']) 
                 
-                if maxScore > DB.high_score:
-                    suggestions = suggestions + printResult(result, eachlyrics['title'], doc['_id'])
-                    suggestions.append('found the song')
-                    song = song + ', ' + eachlyrics['title']
-                    logging.info('found the song', extra= {'_id': doc['_id']})             
-                    go_to_next_tweet = True
+                result = blaster.SMWalignment(tweet.lower(), title.lower(), DB.threshold)
+                    
+                if round(result[2],2) > 0.70: 
+                    logging.info('title found', extra = {'_id': doc['_id']})
+                    titleMatched = True
+                    suggestions = suggestions + printResult(result, eachtitle['title'], doc['_id'])   
+                        
+                    now = datetime.now()
+                    newvalue = setNewValue(round(result[2],2), '\n'.join(suggestions), eachtitle['title'], \
+                                           DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+                    DB.tweetTbl.update_one(obj_id, newvalue)
                     break
-             
-        if go_to_next_tweet == True:
-            break
+            
+            if titleMatched == True:
+                return 0
+              
+            mylyricquery = {'$and': keyword_list_lyric} # query keyword
+            mylyrics = DB.lyricTbl.find(mylyricquery)  #find in lyrics database
         
-    suggestions.append('Score: ' + str(round(maxScore,2)) + '/1.0' )
-    suggestions = list(dict.fromkeys(suggestions))
-    
-    now = datetime.now()     
-    newvalue = setNewValue(round(maxScore,2), '\n'.join(suggestions), song, DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
-    DB.tweetTbl.update_one(tweetID, newvalue)
-    
+            # logging.info(mylyricquery, extra= {'_id': doc['_id']})
+            # logging.info(str(mylyrics.count()) + ' possible lyrics found.', extra= {'_id': doc['_id']})
+            
+            maxScore = 0.0
+            
+            start = time.time()
+            for eachlyrics in mylyrics: #loop through mylyrics list
+                
+                # initialize variables 
+                continue_test = False  
+        
+                # read each line of lyrics  
+                past_line_2 = ''
+                past_line_1 = ''
+                past_line_0 = ''
+                combined_string = ''
+                
+                maxScore = 0.0 #reset
+                maxMatch = 0
+          
+                for eachline in eachlyrics['lyrics1'].splitlines():
+                    
+                    eachline = cleaner.clean(eachline)
+                    
+                    past_line_2 = past_line_1
+                    past_line_1 = past_line_0
+                    past_line_0 = eachline
+                    
+                    combined_string = past_line_2 + ' ' + past_line_1 + ' ' + past_line_0
+                    for query_word in query_list:
+                        if query_word.lower() in combined_string.lower():
+                            continue_test = True
+                                
+                    if continue_test == True:
+        
+                        # perform blast Search                    
+                        result = blaster.SMWalignment(tweet, past_line_1.lower(), DB.threshold)
+                        maxScore = result[2]
+                        maxMatch = result[3]
+                            
+                        if result[6] == True:
+                            followupLine = past_line_1 + ' ' + past_line_0
+                            followUpResult = blaster.SMWalignment(tweet, followupLine.lower(), DB.threshold)
+                            maxScore = max(result[2], followUpResult[2], maxScore)
+                            maxMatch = max(result[3], followUpResult[3], maxMatch)
+                            
+                        if result[7] == True:
+                            stepBackLine = past_line_2 + ' ' + past_line_1
+                            stepBackResult = blaster.SMWalignment(tweet, stepBackLine.lower(), DB.threshold)
+                            maxScore = max(result[2], stepBackResult[2], maxScore)
+                            maxMatch = max(result[3], stepBackResult[3], maxMatch)
+                        
+                        if maxScore > DB.high_score:
+                            suggestions = suggestions + printResult(result, eachlyrics['title'], doc['_id'])
+                            suggestions.append('found the song')
+                            song = eachlyrics['title']
+                            logging.info('found the song', extra= {'_id': doc['_id']})             
+                            go_to_next_tweet = True
+                            break
+                     
+                if go_to_next_tweet == True:
+                    break
+                
+            suggestions.append('Score: ' + str(round(maxScore,2)) + '/1.0' )
+            suggestions = list(dict.fromkeys(suggestions))
+            
+            now = datetime.now()     
+            newvalue = setNewValue(round(maxScore,2), '\n'.join(suggestions), song, DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+            DB.tweetTbl.update_one(obj_id, newvalue)
+            stop = time.time()
+            debugfile.write("{} - total time finding lyrics: {}\n".format(tweetID, stop-start))
+            debugfile.write("{}\n".format(query_list))
+    except: 
+        print('Lyrics Search Error - {}'.format(doc['tweetID']))

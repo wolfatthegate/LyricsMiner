@@ -106,7 +106,7 @@ def ImportTweets(filepath):
     
         logfile.write('finished importing file: {} at {}\n'.format(filepath, datetime.now().time())) 
 
-folderlist = ['2016-10-week-1']
+folderlist = ['2016-10-week-2']
 
 for folder in folderlist:
      
