@@ -1,7 +1,11 @@
+'''
+Author - Waylon Luo
+'''
+
 import pymongo
 import logging
 
-tablename = '2016-10-week-3'
+tablename = '2016-10-week-4'
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient['LyricsDB']
 lyricTbl = mydb['Lyrics']

@@ -38,7 +38,7 @@ def main():
                 now = datetime.now()
                 dt_string = now.strftime("%m/%d/%Y %H:%M:%S")
                 logfile.write('{}: {} scanned {} documents \n'.format(DB.tablename, dt_string, scanned)) 
-        
+                print('{}: {} scanned {} documents \n'.format(DB.tablename, dt_string, scanned))
         noofdoc = DB.tweetTbl.find(myquery).count()
 
 if __name__ == "__main__":
