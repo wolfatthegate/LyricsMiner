@@ -48,7 +48,10 @@ def ImportTweets(filepath):
                 except: 
                     description = ''
                 follower = jsonObj['user']['followers_count']   
-                             
+                user_favorite_count = jsonObj['user']['favourites_count']
+                tweet_favorite_count = jsonObj['favorite_count']
+                retweet_count = jsonObj['retweet_count']     
+                
                 try:
                     location = jsonObj['place']['full_name']
                 except: 
@@ -61,6 +64,9 @@ def ImportTweets(filepath):
                         'retweeted': retweeted,
                         'userid': userid, 
                         'follower': follower, 
+                        'user_favorite_count': user_favorite_count, 
+                        'tweet_favorite_count': tweet_favorite_count, 
+                        'retweet_count': retweet_count, 
                         'suggestions': 'tweet too short', 
                         'type':1}
                     try:
@@ -79,6 +85,9 @@ def ImportTweets(filepath):
                         'retweeted': retweeted,
                         'userid': userid, 
                         'follower': follower, 
+                        'user_favorite_count': user_favorite_count, 
+                        'tweet_favorite_count': tweet_favorite_count, 
+                        'retweet_count': retweet_count, 
                         'suggestions': 'common term', 
                         'type':1}
                     try:
@@ -95,6 +104,9 @@ def ImportTweets(filepath):
                         'retweeted': retweeted, 
                         'userid': userid,
                         'follower': follower,
+                        'user_favorite_count': user_favorite_count, 
+                        'tweet_favorite_count': tweet_favorite_count, 
+                        'retweet_count': retweet_count, 
                         'suggestions': '',
                         'type':0}
                 try:
