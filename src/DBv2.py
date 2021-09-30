@@ -11,7 +11,7 @@ lyricsMatchTbl = 'lyrics_match'
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient['LyricsDB']
 lyricTbl = mydb['Lyrics']
-twitterDataTbl = myclient['tweets_valid']
+twitterDataTbl = myclient['tweet_drugs']
 tweetTbl = twitterDataTbl[tablename]
 lyricsMatchTbl = twitterDataTbl[lyricsMatchTbl]
 
