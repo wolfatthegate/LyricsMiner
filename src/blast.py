@@ -4,7 +4,6 @@ import nltk
 import pandas as pd
 import TextCleaner
 import logging
-from gensim.summarization import textcleaner
 
 class blast:
     logFormatter = '%(asctime)s - %(levelname)s - %(message)s'
