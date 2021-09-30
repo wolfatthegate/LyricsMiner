@@ -1,7 +1,7 @@
 
 ###  The updates are stored in DBv2.request as list entries
 ###  Debugging logs are taken out. 
-###  JUN 15, 2021
+###  SEP 30, 2021
 ###  Author - Waylon Luo
 
 import TextCleaner
@@ -107,12 +107,9 @@ def searchTweet(doc):
         else:
             temp_str = doc['text']
         
-        # normalizer simplify the words 
-        # that spelling checkers cannot handle.
+        # normalizer simplify the words that spelling checkers cannot handle.
+        
         tweet = normalizer.normalize(tweet)
-        # logging.info(mytitlequery, extra = {'_id': doc['_id']})
-        # logging.info('searching for ' + temp_str + ' ' + str(mytitle.count()) + \
-        #              ' possible titles found.', extra = {'_id': doc['_id']})
         
         for eachtitle in mytitle: 
             title = cleaner.clean(eachtitle['title']) 
@@ -135,13 +132,9 @@ def searchTweet(doc):
           
         mylyricquery = {'$and': keyword_list_lyric} # query keyword
         mylyrics = DBv2.lyricTbl.find(mylyricquery)  #find in lyrics database
-    
-        # logging.info(mylyricquery, extra= {'_id': doc['_id']})
-        # logging.info(str(mylyrics.count()) + ' possible lyrics found.', extra= {'_id': doc['_id']})
-        
         maxScore = 0.0
-        
         start = time.time()
+        
         for eachlyrics in mylyrics: #loop through mylyrics list
             
             # initialize variables 
