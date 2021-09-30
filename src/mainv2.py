@@ -25,7 +25,7 @@ def main():
     
         if parallel == 0: ###   RUN IN SERIAL 
             for doc in docs: 
-                LyricsMiner.searchTweet(doc)
+                LyricsMinerv2.searchTweet(doc)
             
         else:             ###   RUN IN PARALLEL 
             with concurrent.futures.ProcessPoolExecutor() as executor:
