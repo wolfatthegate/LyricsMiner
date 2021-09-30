@@ -11,7 +11,7 @@ from datetime import datetime
 def main():
     
     ### Initialization
-    myquery = {'type':{'$not':{'$in':[1]}}}
+    myquery = {}
     
     noofdoc = DBv2.tweetTbl.find(myquery).count() #find() method returns a list of dictionary
     print('total number of docs in query - {}'.format(noofdoc))
