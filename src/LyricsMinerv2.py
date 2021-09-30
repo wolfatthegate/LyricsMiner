@@ -102,10 +102,10 @@ def searchTweet(doc):
         mytitlequery = {'$and': keyword_list_title}
         mytitle = DBv2.lyricTbl.find(mytitlequery)
         
-        if len(doc['tweet']) > 60:
-            temp_str = doc['tweet'][0:60] + ' ... '
+        if len(doc['text']) > 60:
+            temp_str = doc['text'][0:60] + ' ... '
         else:
-            temp_str = doc['tweet']
+            temp_str = doc['text']
         
         # normalizer simplify the words 
         # that spelling checkers cannot handle.
