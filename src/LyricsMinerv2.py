@@ -35,13 +35,12 @@ def printResult(result, songtitle, doc_id):
     
     return suggestions
 
-def setNewValue(tweetID, tweet, score, suggestions, song, type, x_add):
+def setNewValue(tweetID, tweet, score, suggestions, song, x_add):
     newvalue = {'id_str': tweetID, \
                           'text': tweet, \
                           'score': score, \
                           'suggestions': suggestions, \
                           'song': song, \
-                          'type': type, \
                           'x_add': x_add}
     return newvalue
 
@@ -52,7 +51,7 @@ def searchTweet(doc):
         
         if not tweet: 
             now = datetime.now()
-            newvalue = setNewValue(tweetID, tweet, 0.00, 'empty tweet', '', DBv2.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+            newvalue = setNewValue(tweetID, tweet, 0.00, 'empty tweet', '', now.strftime("%Y-%m-%d %H:%M:%S"))
             DBv2.lyricsMatchTbl.insert_one(newvalue)
             return 0 
         tweet = cleaner.clean(tweet)
@@ -67,7 +66,7 @@ def searchTweet(doc):
         
         if len(tokenized_str) < 5:
             now = datetime.now()
-            newvalue = setNewValue(tweetID, tweet, 0.01, 'Tweet too short', DBv2, DBv2.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+            newvalue = setNewValue(tweetID, tweet, 0.01, 'Tweet too short', '', now.strftime("%Y-%m-%d %H:%M:%S"))
             DBv2.lyricsMatchTbl.insert_one(newvalue)
             return 0 
         
@@ -77,7 +76,7 @@ def searchTweet(doc):
        
         if not query_list:
             now = datetime.now()
-            newvalue = setNewValue(tweetID, tweet, 0.01, 'no drug keywords found', '', DBv2.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+            newvalue = setNewValue(tweetID, tweet, 0.01, 'no drug keywords found', '', now.strftime("%Y-%m-%d %H:%M:%S"))
             DBv2.lyricsMatchTbl.insert_one(newvalue)
             return 0
         
@@ -123,7 +122,7 @@ def searchTweet(doc):
                     
                 now = datetime.now()
                 newvalue = setNewValue(tweetID, tweet, round(result[2],2), '\n'.join(suggestions), eachtitle['title'], \
-                                       DBv2.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+                                       now.strftime("%Y-%m-%d %H:%M:%S"))
                 DBv2.lyricsMatchTbl.insert_one(newvalue)
                 break
         
@@ -196,7 +195,7 @@ def searchTweet(doc):
         suggestions = list(dict.fromkeys(suggestions))
         
         now = datetime.now()     
-        newvalue = setNewValue(tweetID, tweet, round(maxScore,2), '\n'.join(suggestions), song, DBv2.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+        newvalue = setNewValue(tweetID, tweet, round(maxScore,2), '\n'.join(suggestions), song, now.strftime("%Y-%m-%d %H:%M:%S"))
         DBv2.lyricsMatchTbl.insert_one(newvalue)
         stop = time.time()
 
