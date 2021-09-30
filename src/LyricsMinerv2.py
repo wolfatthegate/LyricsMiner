@@ -212,4 +212,4 @@ def searchTweet(doc):
         stop = time.time()
 
     except: 
-        print('Lyrics Search Error - {}'.format(doc['tweetID']))
+        print('Lyrics Search Error - {}'.format(tweetID))
