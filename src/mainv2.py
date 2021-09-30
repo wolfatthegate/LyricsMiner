@@ -19,7 +19,7 @@ def main():
     scanned = 0
     y = 200
     
-    while noofdoc > 0:
+    while noofdoc > scanned:
         
         docs = DBv2.tweetTbl.find(myquery).limit(y)
     
@@ -39,7 +39,7 @@ def main():
                 dt_string = now.strftime("%m/%d/%Y %H:%M:%S")
                 logfile.write('{}: {} scanned {} documents \n'.format(DBv2.tablename, dt_string, scanned)) 
                 print('{}: {} scanned {} documents \n'.format(DBv2.tablename, dt_string, scanned))
-        noofdoc = DBv2.tweetTbl.find(myquery).count()
+        
 
 if __name__ == "__main__":
     print('start main - scanning {}'.format(DBv2.tablename))

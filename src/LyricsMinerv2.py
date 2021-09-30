@@ -36,13 +36,13 @@ def printResult(result, songtitle, doc_id):
     return suggestions
 
 def setNewValue(tweetID, tweet, score, suggestions, song, type, x_add):
-    newvalue = { '$set': {'id_str': tweetID, \
+    newvalue = {'id_str': tweetID, \
                           'text': tweet, \
                           'score': score, \
                           'suggestions': suggestions, \
                           'song': song, \
                           'type': type, \
-                          'x_add': x_add}}
+                          'x_add': x_add}
     return newvalue
 
 def searchTweet(doc):
@@ -120,9 +120,9 @@ def searchTweet(doc):
             result = blaster.SMWalignment(tweet.lower(), title.lower(), DBv2.threshold)
                 
             if round(result[2],2) > 0.70: 
-                logging.info('title found', extra = {'_id': doc['_id']})
+                logging.info('title found', extra = {'id_str': doc['id_str']})
                 titleMatched = True
-                suggestions = suggestions + printResult(result, eachtitle['title'], doc['_id'])   
+                suggestions = suggestions + printResult(result, eachtitle['title'], doc['id_str'])   
                     
                 now = datetime.now()
                 newvalue = setNewValue(tweetID, tweet, round(result[2],2), '\n'.join(suggestions), eachtitle['title'], \
@@ -189,10 +189,10 @@ def searchTweet(doc):
                         maxMatch = max(result[3], stepBackResult[3], maxMatch)
                     
                     if maxScore > DBv2.high_score:
-                        suggestions = suggestions + printResult(result, eachlyrics['title'], doc['_id'])
+                        suggestions = suggestions + printResult(result, eachlyrics['title'], doc['id_str'])
                         suggestions.append('found the song')
                         song = eachlyrics['title']
-                        logging.info('found the song', extra= {'_id': doc['_id']})             
+                        logging.info('found the song', extra= {'id_str': doc['id_str']})             
                         go_to_next_tweet = True
                         break
                  
