@@ -47,7 +47,7 @@ def setNewValue(tweetID, tweet, score, suggestions, song, type, x_add):
 
 def searchTweet(doc):
     try: 
-        tweet = doc['tweet']
+        tweet = doc['text']
         tweetID = doc['id_str']
         
         if not tweet: 
