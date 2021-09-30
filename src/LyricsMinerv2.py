@@ -50,10 +50,6 @@ def searchTweet(doc):
         tweet = doc['tweet']
         tweetID = doc['id_str']
         
-        # completed scan
-        if doc['type'] == 1: 
-            return 0
-        
         if not tweet: 
             now = datetime.now()
             newvalue = setNewValue(tweetID, tweet, 0.00, 'empty tweet', '', DBv2.type, now.strftime("%Y-%m-%d %H:%M:%S"))
