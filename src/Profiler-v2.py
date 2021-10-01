@@ -27,7 +27,7 @@ def main():
         usrlist.append([data['userid'], data['follower'], data['tweet']])
     
     df = pd.DataFrame(usrlist)
-    df.to_csv(file_name+'-profiles.csv', index = False)
+    df.to_csv(table_name+'-profiles.csv', index = False)
     
 if __name__ == "__main__":
     main()
