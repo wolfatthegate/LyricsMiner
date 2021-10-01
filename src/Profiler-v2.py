@@ -24,7 +24,7 @@ def main():
     usrlist = ['userid', 'follower', 'tweet']
 
     for data in dataList:      
-        usrlist.append(data['userid'], data['follower'], data['tweet'])
+        usrlist.append([data['userid'], data['follower'], data['tweet']])
     
     df = pd.DataFrame(usrlist)
     df.to_csv(file_name+'-profiles.csv', index = False)
