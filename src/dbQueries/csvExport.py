@@ -3,11 +3,13 @@ import pymongo
 import pandas as pd
 
 def main(): 
-    tablename = sys.argv[1]
-    filename = sys.argv[2]
+    
+    dbname = sys.argv[1] #TwitterData #tweet_drugs
+    tablename = sys.argv[2] #2017-01-week-1 #lyrics_match
+    filename = sys.argv[3]
     
     myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-    twitterDataTbl = myclient['TwitterData']
+    twitterDataTbl = myclient[dbname]
     tweetTbl = twitterDataTbl[tablename]
     cursor = tweetTbl.find({'score':{'$gt':0.49}})
     
