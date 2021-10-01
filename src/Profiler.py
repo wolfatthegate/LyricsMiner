@@ -1,3 +1,7 @@
+### Profiler list the Lyrics tweeters and the followers to measure the influence. 
+### Author - Waylon Luo
+
+
 import pymongo
 import sys
 
@@ -5,7 +9,7 @@ def main():
 
     ### DB connection
 
-    table_name = '2017-10-week-1'
+    table_name = sys.argv[1] #'2017-10-week-1'
     myclient = pymongo.MongoClient("mongodb://localhost:27017/")
     twitterDB = myclient['TwitterData']
     tweetTbl = twitterDB[table_name]
