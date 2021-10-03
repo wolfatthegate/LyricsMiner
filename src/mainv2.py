@@ -21,7 +21,7 @@ def main():
     
     while noofdoc > scanned:
         
-        docs = DBv2.tweetTbl.find(myquery).limit(y)
+        docs = DBv2.tweetTbl.find(myquery).skip(y).limit(y)
     
         if parallel == 0: ###   RUN IN SERIAL 
             for doc in docs: 
