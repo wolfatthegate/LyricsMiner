@@ -40,10 +40,10 @@ def main():
         ### Query
         tweetObjs = tvtbl.find({'_user_id_str': userID})
         
-        data = []
+        
         ### Iterate all the tweets from same user
         for tweetObj in tweetObjs: 
-            
+            data = []
             data.append(tweetObj['_user_id_str'])
             data.append(tweetObj['_id'])
             data.append(tweetObj['_full_text'])
@@ -52,7 +52,7 @@ def main():
             data.append(tweetObj['retweet_count'])
             data.append(tweetObj['favorite_count'])
         
-        csvtbl.append(data)
+            csvtbl.append(data)
 
     df =  pd.DataFrame(np.array(csvtbl), 
                        columns = ['_user_id_str', '_id', '_full_text', \
