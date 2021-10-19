@@ -27,7 +27,7 @@ def main():
     
     for tweetID in tweetIDs: 
         tweetObj = tvtbl.find({'_id': tweetID})
-        userIDs.append(tweetObj['_user_id_str'])
+        userIDs.append(tweetObj[0]['_user_id_str'])
         
     ### filter unique user ID list    
     userIDs = list(set(userIDs))
