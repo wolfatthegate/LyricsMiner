@@ -53,12 +53,9 @@ def main():
             data.append(tweetObj['favorite_count'])
         
             csvtbl.append(data)
-
-    df =  pd.DataFrame(np.array(csvtbl), 
-                       columns = ['_user_id_str', '_id', '_full_text', \
-                                  'quote_count', 'reply_count', \
-                                  'retweet_count', 'favorite_count'])
-    
+            
+    npa = np.asarray(csvtbl)
+    df =  pd.DataFrame(np.array(npa), columns = ['_user_id_str', '_id', '_full_text', 'quote_count', 'reply_count', 'retweet_count', 'favorite_count'])
     df.to_csv(filename+'.csv', index=False)
     
 if __name__ == "__main__":
