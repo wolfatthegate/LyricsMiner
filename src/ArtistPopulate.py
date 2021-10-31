@@ -85,7 +85,7 @@ def main():
 
     ### DB connection
     table_names = []
-    with open('TableName2.txt', 'r') as f: 
+    with open('TableName.txt', 'r') as f: 
         table_names = f.read().split()
         
     print(table_names)
