@@ -104,29 +104,29 @@ def main():
         ### Query    
         docs = tweetTbl.find({'score': {'$gt': 0.49}, 'type': 1})
         print(docs.count())
-        with open(table_name+'_artist_stats.txt', 'a') as file: 
-            
-            for doc in docs: 
-                obj_id = {'_id': doc['_id']}
-                song = doc['song']
-                tweet = doc['tweet'] 
-                tweet = tweet.replace('\n', ' ')
-                
-                if song.startswith(', '): 
-                    song = song.replace(', ', '')
-                    
-                songsInfo = lyricsTbl.find({'title': song})
+        
+        for doc in docs: 
+            obj_id = {'_id': doc['_id']}
+            song = doc['song']
+            tweet = doc['tweet'] 
+            tweet = tweet.replace('\n', ' ')
 
-                if songsInfo.count() == 1:  
-                    artist = songsInfo[0]['name']
-                    year = songsInfo[0]['year']
-                    tweetTbl.update_one(obj_id, setNewValue(artist, year))
+            if song.startswith(', '): 
+                song = song.replace(', ', '')
+
+            songsInfo = lyricsTbl.find({'title': song})
+
+            if songsInfo.count() == 1:  
+                artist = songsInfo[0]['name']
+                year = songsInfo[0]['year']
+                tweetTbl.update_one(obj_id, setNewValue(artist, year))
+
+            else: 
+                artist, year = findSong(doc, songsInfo)
+                tweetTbl.update_one(obj_id, setNewValue(artist, year))
+                ### we have to find the lyrics from multiple results
+                ### and pick only one. 
                 
-                else: 
-                    artist, year = findSong(doc, songsInfo)
-                    tweetTbl.update_one(obj_id, setNewValue(artist, year))
-                    ### we have to find the lyrics from multiple results
-                    ### and pick only one. 
         print('{} finished '.format(table_name))  
 
     
