@@ -35,10 +35,12 @@ def printResult(result, songtitle, doc_id):
     
     return suggestions
 
-def setNewValue(score, suggestions, song, type, x_add):
+def setNewValue(score, suggestions, song, artist, year, type, x_add):
     newvalue = { '$set': {'score': score , \
                           'suggestions': suggestions, \
                           'song': song, \
+                          'artist': artist, \
+                          'year': year, \
                           'type': type, \
                           'x_add': x_add}}
     return newvalue
@@ -50,12 +52,12 @@ def searchTweet(doc):
         tweetID = doc['tweetID']
         
         # completed scan
-        if doc['type'] == 1: 
-            return 0
+        # if doc['type'] == 1: 
+        #     return 0
         
         if not tweet: 
             now = datetime.now()
-            newvalue = setNewValue(0.00, 'empty tweet', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+            newvalue = setNewValue(0.00, 'empty tweet', '', '', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
             DB.tweetTbl.update_one(obj_id, newvalue)
             return 0 
         tweet = cleaner.clean(tweet)
@@ -70,7 +72,7 @@ def searchTweet(doc):
         
         if len(tokenized_str) < 5:
             now = datetime.now()
-            newvalue = setNewValue(0.01, 'Tweet too short', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+            newvalue = setNewValue(0.01, 'Tweet too short', '', '', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
             DB.tweetTbl.update_one(obj_id, newvalue)
             return 0 
         
@@ -80,7 +82,7 @@ def searchTweet(doc):
        
         if not query_list:
             now = datetime.now()
-            newvalue = setNewValue(0.01, 'no drug keywords found', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+            newvalue = setNewValue(0.01, 'no drug keywords found', '', '', '', DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
             DB.tweetTbl.update_one(obj_id, newvalue)
             return 0
         
@@ -92,7 +94,7 @@ def searchTweet(doc):
         
         go_to_next_tweet = False
         titleMatched = False
-        savedline, combined_lines, song = '', '', ''
+        savedline, combined_lines, song, artist, year = '', '', '', '', ''
         suggestions = []
         
         keyword_list_title = []
@@ -129,6 +131,7 @@ def searchTweet(doc):
                     
                 now = datetime.now()
                 newvalue = setNewValue(round(result[2],2), '\n'.join(suggestions), eachtitle['title'], \
+                                       eachtitle['name'], eachtitle['year'], \
                                        DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
                 DB.tweetTbl.update_one(obj_id, newvalue)
                 break
@@ -195,6 +198,8 @@ def searchTweet(doc):
                         suggestions = suggestions + printResult(result, eachlyrics['title'], doc['_id'])
                         suggestions.append('found the song')
                         song = eachlyrics['title']
+                        artist = eachlyrics['name']
+                        year = eachlyrics['year']
                         logging.info('found the song', extra= {'_id': doc['_id']})             
                         go_to_next_tweet = True
                         break
@@ -206,7 +211,7 @@ def searchTweet(doc):
         suggestions = list(dict.fromkeys(suggestions))
         
         now = datetime.now()     
-        newvalue = setNewValue(round(maxScore,2), '\n'.join(suggestions), song, DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
+        newvalue = setNewValue(round(maxScore,2), '\n'.join(suggestions), song, artist, year, DB.type, now.strftime("%Y-%m-%d %H:%M:%S"))
         DB.tweetTbl.update_one(obj_id, newvalue)
         stop = time.time()
 
