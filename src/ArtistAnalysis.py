@@ -127,6 +127,8 @@ def main():
                     tweetTbl.update_one(obj_id, setNewValue(artist, year))
                     ### we have to find the lyrics from multiple results
                     ### and pick only one. 
+        print('{} finished '.format(table_name))  
+
     
 if __name__ == "__main__":
     main()
