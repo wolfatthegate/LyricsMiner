@@ -2,6 +2,8 @@
 ###  The updates are stored in DB.request as list entries
 ###  Debugging logs are taken out. 
 ###  JUN 15, 2021
+###  Artist and year fields added after the lyrics match is found. 
+###  OCT 31, 2021
 ###  Author - Waylon Luo
 
 import TextCleaner
