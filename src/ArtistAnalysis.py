@@ -30,7 +30,6 @@ monthly_tables = [['2016-01-week-2', '2016-01-week-3', '2016-01-week-4'],
 ['2017-12-week-1', '2017-12-week-2', '2017-12-week-3', '2017-12-week-4']]
 
 for monthly_table in monthly_tables:
-
     frame = []
     
     for weekly_table in monthly_table: 
@@ -41,7 +40,7 @@ for monthly_table in monthly_tables:
         frame.append(df)
     
     monthly_result = pd.concat(frame)
-    
     count = monthly_result.groupby(['artist', 'song']).size()
+    
     count.to_csv(weekly_table[0:7]+'_artist_song.csv', index=True)
     print('{} finished'.format(weekly_table))
