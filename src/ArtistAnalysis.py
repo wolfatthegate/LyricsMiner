@@ -43,5 +43,5 @@ for monthly_table in monthly_tables:
     monthly_result = pd.concat(frame)
     
     count = monthly_result.groupby(['artist', 'song']).size()
-    print(count)
     count.to_csv(weekly_table[0:7]+'_artist_song.csv', index=True)
+    print('{} finished'.format(weekly_table))
