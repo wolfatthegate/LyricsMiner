@@ -42,9 +42,9 @@ for monthly_table in monthly_tables:
     monthly_result = pd.concat(frame)
     
     count = monthly_result.groupby(['artist', 'song'])['song'].count().reset_index(name='Count').sort_values(['Count'], ascending=False)  
-    count.to_csv(weekly_table[0:7]+'_group_by_song.csv', index=True)
+    count.to_csv(weekly_table[0:4]+'_group_by_song.csv', index=True)
     
     count = monthly_result.groupby(['artist'])['artist'].count().reset_index(name='Count').sort_values(['Count'], ascending=False)
-    count.to_csv(weekly_table[0:7]+'_group_by_artist.csv', index=True)
+    count.to_csv(weekly_table[0:4]+'_group_by_artist.csv', index=True)
     
     print('{} finished'.format(weekly_table))
