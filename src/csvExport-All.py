@@ -27,21 +27,13 @@ tableList = ['2016-01-week-2', '2016-01-week-3', '2016-01-week-4',
 '2017-10-week-1', '2017-10-week-2', '2017-10-week-3', '2017-10-week-4',
 '2017-11-week-1', '2017-11-week-2', '2017-11-week-3', '2017-11-week-4',
 '2017-12-week-1', '2017-12-week-2', '2017-12-week-3', '2017-12-week-4'] 
-filename = '2016-2017-All-Lyrics'
+filename = '-All-Lyrics'
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 twitterDataTbl = myclient[dbname]
 
-
-for idx, table in enumerate(tableList): 
+for table in tableList: 
     tweetTbl = twitterDataTbl[table]
     cursor = tweetTbl.find({'score':{'$gt':0.49}})    
     df = pd.DataFrame(list(cursor))
-    
-    if idx == 0:
-        total_df = df
-    else:
-        frames = [total_df, df]
-        total_df = pd.concat(frames)
-        
-total_df.to_csv(filename + '.csv', index=False)
+    df.to_csv(table + filename + '.csv', index=False)
