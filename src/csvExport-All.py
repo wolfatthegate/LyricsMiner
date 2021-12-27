@@ -37,5 +37,5 @@ twitterDataTbl = myclient[dbname]
 for table in tableList: 
     tweetTbl = twitterDataTbl[table]
     cursor = tweetTbl.find({'score':{'$gt':0.49}})    
-    with open('2016-2017-lyrics-matches.json', 'w') as file:
+    with open(table + '-lyrics-matches.json', 'w') as file:
         json.dump(json.loads(dumps(cursor)), file)
