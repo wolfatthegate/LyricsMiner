@@ -35,5 +35,5 @@ twitterDataTbl = myclient[dbname]
 for table in tableList: 
     tweetTbl = twitterDataTbl[table]
     cursor = tweetTbl.find({'score':{'$gt':0.49}})    
-    df = pd.DataFrame(list(cursor))
-    df.to_csv(table + filename + '.csv', index=False)
+    with open('2016-2017-lyrics-matches.json', 'w') as file:
+        json.dump(json.loads(dumps(cursor)), file)
