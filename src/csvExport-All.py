@@ -1,6 +1,8 @@
 import sys
 import pymongo
 import pandas as pd
+from bson.json_util import dumps
+import json
 
 dbname = 'TwitterData' #TwitterData #tweet_drugs
 tableList = ['2016-01-week-2', '2016-01-week-3', '2016-01-week-4',
