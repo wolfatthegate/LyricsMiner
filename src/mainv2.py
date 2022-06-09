@@ -29,7 +29,7 @@ def main():
                     now = datetime.now()
                     dt_string = now.strftime("%m/%d/%Y %H:%M:%S")
                     logfile.write('{}: {} scanned {} documents from table {}\n'.format(DBv2.tablename, dt_string, count, DBv2.tablename)) 
-                    print('{}: {} scanned {} documents from table {}\n'.format(DBv2.tablename, dt_string, count, DBv2.tablename))    
+                    print('{}: {} scanned {} documents from table {}'.format(DBv2.tablename, dt_string, count, DBv2.tablename))    
             
         except StopIteration:
             print('error in mainv2')
