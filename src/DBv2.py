@@ -15,8 +15,6 @@ twitterDataTbl = myclient['tweet_drugs']
 tweetTbl = twitterDataTbl[tablename]
 lyricsMatchTbl = twitterDataTbl[lyricsMatchTbl]
 
-
-
 logFormatter = '%(asctime)s - %(_id)s - %(levelname)s - %(message)s'
 logging.basicConfig(filename='logs/'+tablename+'_Logs.log',level=logging.INFO, format='%(asctime)s %(_id)s %(levelname)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
